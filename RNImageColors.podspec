@@ -1,6 +1,6 @@
 require 'json'
 
-ENV['SWIFT_VERSION'] = '5'
+ENV['SWIFT_VERSION'] = '4'
 
 package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 
