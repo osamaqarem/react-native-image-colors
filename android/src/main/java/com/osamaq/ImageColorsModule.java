@@ -44,7 +44,7 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
      * If pixelSpacing == 1: the average color will be the real average.
      * If pixelSpacing < 1: the method will most likely crash (don't use values below 1).
      */
-    private static int calculateAverageColor(@NonNull Bitmap bitmap) {
+    private int calculateAverageColor(@NonNull Bitmap bitmap) {
         int R = 0;
         int G = 0;
         int B = 0;
@@ -85,6 +85,42 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
         getMuted = false;
     }
 
+
+    private void getBooleans(ReadableMap config) {
+        try {
+            getAvg = config.getBoolean("getAverage");
+        } catch (Exception ignored) {
+        }
+        try {
+            getDominant = config.getBoolean("getDominant");
+        } catch (Exception ignored) {
+        }
+        try {
+            getVib = config.getBoolean("getVibrant");
+        } catch (Exception ignored) {
+        }
+        try {
+            getDarkVibrant = config.getBoolean("getDarkVibrant");
+        } catch (Exception ignored) {
+        }
+        try {
+            getLightVibrant = config.getBoolean("getLightVibrant");
+        } catch (Exception ignored) {
+        }
+        try {
+            getDarkMuted = config.getBoolean("getDarkMuted");
+        } catch (Exception ignored) {
+        }
+        try {
+            getLightMuted = config.getBoolean("getLightMuted");
+        } catch (Exception ignored) {
+        }
+        try {
+            getMuted = config.getBoolean("getMuted");
+        } catch (Exception ignored) {
+        }
+    }
+
     @ReactMethod
     public void getImageColorsFromURL(String url, ReadableMap config, Promise promise) {
         try {
@@ -92,40 +128,7 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
             if (defColor == null) throw new Exception("Default color must be provided.");
             int defColorInt = parseColorFromHex(defColor);
             falsifyAll();
-
-            try {
-                getAvg = config.getBoolean("getAverage");
-            } catch (Exception ignored) {
-            }
-            try {
-                getDominant = config.getBoolean("getDominant");
-            } catch (Exception ignored) {
-            }
-            try {
-                getVib = config.getBoolean("getVibrant");
-            } catch (Exception ignored) {
-            }
-            try {
-                getDarkVibrant = config.getBoolean("getDarkVibrant");
-            } catch (Exception ignored) {
-            }
-            try {
-                getLightVibrant = config.getBoolean("getLightVibrant");
-            } catch (Exception ignored) {
-            }
-            try {
-                getDarkMuted = config.getBoolean("getDarkMuted");
-            } catch (Exception ignored) {
-            }
-            try {
-                getLightMuted = config.getBoolean("getLightMuted");
-            } catch (Exception ignored) {
-            }
-            try {
-                getMuted = config.getBoolean("getMuted");
-            } catch (Exception ignored) {
-            }
-
+            getBooleans(config);
 
             WritableMap resultMap = Arguments.createMap();
             URL parsedURL = new URL(url);
@@ -194,6 +197,7 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
         }
 
     }
+
 
     private void handleException(Exception e, Promise promise) {
         e.printStackTrace();
