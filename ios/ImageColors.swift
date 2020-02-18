@@ -6,7 +6,6 @@
 //  Copyright © 2020 Facebook. All rights reserved.
 //
 import UIKit
-import UIImageColors
 
 @objc(ImageColors)
 class ImageColors : NSObject{
