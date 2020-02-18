@@ -14,6 +14,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class ImageColorsModule extends ReactContextBaseJavaModule {
@@ -87,60 +88,57 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
 
 
     private void getBooleans(ReadableMap config) {
-        try {
-            getAvg = config.getBoolean("getAverage");
-        } catch (Exception ignored) {
+        if (config.hasKey("average")) {
+            getAvg = config.getBoolean("average");
         }
-        try {
-            getDominant = config.getBoolean("getDominant");
-        } catch (Exception ignored) {
+        if (config.hasKey("dominant")) {
+            getDominant = config.getBoolean("dominant");
         }
-        try {
-            getVib = config.getBoolean("getVibrant");
-        } catch (Exception ignored) {
+        if (config.hasKey("vibrant")) {
+            getVib = config.getBoolean("vibrant");
         }
-        try {
-            getDarkVibrant = config.getBoolean("getDarkVibrant");
-        } catch (Exception ignored) {
+        if (config.hasKey("darkVibrant")) {
+            getDarkVibrant = config.getBoolean("darkVibrant");
         }
-        try {
-            getLightVibrant = config.getBoolean("getLightVibrant");
-        } catch (Exception ignored) {
+        if (config.hasKey("lightVibrant")) {
+            getLightVibrant = config.getBoolean("lightVibrant");
         }
-        try {
-            getDarkMuted = config.getBoolean("getDarkMuted");
-        } catch (Exception ignored) {
+        if (config.hasKey("darkMuted")) {
+            getDarkMuted = config.getBoolean("darkMuted");
         }
-        try {
-            getLightMuted = config.getBoolean("getLightMuted");
-        } catch (Exception ignored) {
+        if (config.hasKey("lightMuted")) {
+            getLightMuted = config.getBoolean("lightMuted");
         }
-        try {
-            getMuted = config.getBoolean("getMuted");
-        } catch (Exception ignored) {
+        if (config.hasKey("muted")) {
+            getMuted = config.getBoolean("muted");
         }
     }
+
 
     @ReactMethod
     public void getColors(String url, ReadableMap config, Promise promise) {
         try {
-            String defColor = config.getString("defaultColor");
-            if (defColor == null) throw new Exception("Default color must be provided.");
+            String defColor;
+            if (config.hasKey("defaultColor")) {
+                defColor = config.getString("defaultColor");
+            } else {
+                defColor = "#000000";
+            }
             int defColorInt = parseColorFromHex(defColor);
+
             falsifyAll();
             getBooleans(config);
 
             WritableMap resultMap = Arguments.createMap();
             URL parsedURL = new URL(url);
             Bitmap image = BitmapFactory.decodeStream(parsedURL.openConnection().getInputStream());
-
+            if (image == null) throw new Exception("Invalid image");
+            
             if (getAvg) {
                 int rgbAvg = calculateAverageColor(image);
                 String hexAvg = getHex(rgbAvg);
                 resultMap.putString("average", hexAvg);
             }
-
-
             if (getDominant || getVib || getDarkVibrant || getLightVibrant || getDarkMuted || getLightMuted || getMuted) {
                 Palette.Builder builder = new Palette.Builder(image);
                 builder.generate(palette -> {
@@ -192,6 +190,8 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
             } else {
                 promise.resolve(resultMap);
             }
+        } catch (MalformedURLException e) {
+            handleException(new Exception("Invalid URL"), promise);
         } catch (Exception e) {
             handleException(e, promise);
         }
@@ -201,6 +201,6 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
 
     private void handleException(Exception e, Promise promise) {
         e.printStackTrace();
-        promise.reject(e.getMessage(), e);
+        promise.reject("Error", "ImageColors: " + e.getMessage());
     }
 }
