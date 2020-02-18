@@ -122,7 +122,7 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getImageColorsFromURL(String url, ReadableMap config, Promise promise) {
+    public void getColors(String url, ReadableMap config, Promise promise) {
         try {
             String defColor = config.getString("defaultColor");
             if (defColor == null) throw new Exception("Default color must be provided.");

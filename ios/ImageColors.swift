@@ -29,7 +29,7 @@ class ImageColors : NSObject{
   }
   
   @objc
-  func getImageColorsFromURL(_ url : String, config: NSDictionary, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void{
+  func getColors(_ url : String, config: NSDictionary, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void{
     
     let defColor = config.value(forKey: "defaultColor") as? String
     
