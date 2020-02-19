@@ -7,6 +7,14 @@
 
 Fetch prominent colors from an image using a URL.
 
+<p align="center" >
+  <kbd>
+    <img src="https://github.com/osamaq/react-native-image-colors/tree/master/example/demo.gif" title="Demo">
+  </kbd>
+  <br>
+  <em>Example usage with a <a href="https://github.com/react-native-community/react-native-linear-gradient">gradient</a></em>
+</p>
+
 This module is a wrapper around the [Palette](https://developer.android.com/reference/androidx/palette/graphics/Palette) class on Android and [UIImageColors](https://github.com/jathu/UIImageColors) on iOS.
 
 ## Installation
