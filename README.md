@@ -9,7 +9,7 @@ Fetch prominent colors from an image using a URL.
 
 <p align="center" >
   <kbd>
-    <img src="https://github.com/osamaq/react-native-image-colors/tree/master/example/demo.gif" title="Demo">
+    <img src="https://github.com/osamaq/react-native-image-colors/blob/master/assets/demo.gif" title="Demo">
   </kbd>
   <br>
   <em>Example usage with a <a href="https://github.com/react-native-community/react-native-linear-gradient">gradient</a></em>
