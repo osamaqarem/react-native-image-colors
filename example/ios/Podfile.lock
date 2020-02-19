@@ -217,10 +217,8 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
     - ReactCommon/jscallinvoker (= 0.61.5)
-  - RNImageColors (1.0.0):
+  - RNImageColors (1.0.3):
     - React
-    - UIImageColors (~> 2.1.0)
-  - UIImageColors (2.1.0)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -257,7 +255,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - boost-for-react-native
-    - UIImageColors
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -339,8 +336,7 @@ SPEC CHECKSUMS:
   React-RCTText: 9ccc88273e9a3aacff5094d2175a605efa854dbe
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
-  RNImageColors: 58c77b4fe2729234d45b9d5be96ffa4b33f1f590
-  UIImageColors: d2ef3b0877d203cbb06489eeb78ea8b7788caabe
+  RNImageColors: 59addb0cb6fb1a6f66ca134608c83de8c2de5b72
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
 PODFILE CHECKSUM: e8feed2031013ef24d5038c0dc20775db46af082

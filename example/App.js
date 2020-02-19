@@ -25,15 +25,15 @@ export default class App extends Component {
   }
 
   fetchColors = async () => {
-    const colors = await ImageColors.getImageColorsFromURL(this.URL, {
-      getDominant: true,
-      getAverage: true,
-      getVibrant: true,
-      getDarkVibrant: true,
-      getLightVibrant: true,
-      getDarkMuted: true,
-      getLightMuted: true,
-      getMuted: true,
+    const colors = await ImageColors.getColors(this.URL, {
+      dominant: true,
+      average: true,
+      vibrant: true,
+      darkVibrant: true,
+      lightVibrant: true,
+      darkMuted: true,
+      lightMuted: true,
+      muted: true,
       defaultColor: '#000000',
     });
 

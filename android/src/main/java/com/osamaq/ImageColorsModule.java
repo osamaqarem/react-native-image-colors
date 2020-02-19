@@ -3,8 +3,9 @@ package com.osamaq;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.v7.graphics.Palette;
+
+import androidx.annotation.NonNull;
+import androidx.palette.graphics.Palette;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -130,10 +131,12 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
             getBooleans(config);
 
             WritableMap resultMap = Arguments.createMap();
+            resultMap.putString("platform", "android");
+
             URL parsedURL = new URL(url);
             Bitmap image = BitmapFactory.decodeStream(parsedURL.openConnection().getInputStream());
             if (image == null) throw new Exception("Invalid image");
-            
+
             if (getAvg) {
                 int rgbAvg = calculateAverageColor(image);
                 String hexAvg = getHex(rgbAvg);

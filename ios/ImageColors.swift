@@ -40,7 +40,7 @@ class ImageColors : NSObject{
                 if let uiImage = UIImage(data: imageData) {
                     uiImage.getColors(quality: UIImageColorsQuality.low){ colors in
                         
-                        var resultDict : Dictionary<String, String> = [:]
+                        var resultDict : Dictionary<String, String> = ["platform" : "ios"]
                         
                         if let background = colors?.background{
                             resultDict["background"] = self.toHexString(color: background)
