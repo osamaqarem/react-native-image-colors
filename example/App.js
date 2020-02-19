@@ -37,6 +37,16 @@ export default class App extends Component {
       defaultColor: '#000000',
     });
 
+    if (colors.platform === 'android') {
+      // Access android properties
+      // e.g.
+      const averageColor = colors.average;
+    } else {
+      // Access iOS properties
+      // e.g.
+      const backgroundColor = colors.background;
+    }
+
     this.setState({colors, status: 'DONE'});
   };
   render() {
