@@ -1,40 +1,38 @@
-import { Platform } from "react-native";
+declare module "react-native-image-colors" {
+  type AndroidImageColors = {
+    dominant?: string;
+    average?: string;
+    vibrant?: string;
+    darkVibrant?: string;
+    lightVibrant?: string;
+    darkMuted?: string;
+    lightMuted?: string;
+    muted?: string;
+    platform: "android";
+  };
 
-type AndroidImageColors = {
-  dominant?: string;
-  average?: string;
-  vibrant?: string;
-  darkVibrant?: string;
-  lightVibrant?: string;
-  darkMuted?: string;
-  lightMuted?: string;
-  muted?: string;
-  platform: "android";
-};
+  type iOSImageColors = {
+    background: string;
+    primary: string;
+    secondary: string;
+    detail: string;
+    platform: "ios";
+  };
 
-type iOSImageColors = {
-  background: string;
-  primary: string;
-  secondary: string;
-  detail: string;
-  platform: "ios";
-};
+  type Config = {
+    defaultColor?: string;
+    dominant?: boolean;
+    average?: boolean;
+    vibrant?: boolean;
+    darkVibrant?: boolean;
+    lightVibrant?: boolean;
+    darkMuted?: boolean;
+    lightMuted?: boolean;
+    muted?: boolean;
+  };
 
-type Config = {
-  defaultColor?: string;
-  dominant?: boolean;
-  average?: boolean;
-  vibrant?: boolean;
-  darkVibrant?: boolean;
-  lightVibrant?: boolean;
-  darkMuted?: boolean;
-  lightMuted?: boolean;
-  muted?: boolean;
-};
-
-export declare type ImageColors = {
-  getColors: <T>(
+  export function getColors(
     url: string,
     config: Config
-  ) => Promise<AndroidImageColors | iOSImageColors>;
-};
+  ): Promise<AndroidImageColors | iOSImageColors>;
+}
