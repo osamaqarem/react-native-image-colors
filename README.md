@@ -59,7 +59,7 @@ e.g.
 
 ### config
 
-| Property       | description                                                                                                                                                                                                                    | type      | Required | Android | iOS |
+| Property       | Description                                                                                                                                                                                                                    | Type      | Required | Android | iOS |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | -------- | ------- | --- |
 | `dominant`     | Get the dominant color if true.                                                                                                                                                                                                | `boolean` | No       | ✅      | ❌  |
 | `average`      | Get the average color if true.                                                                                                                                                                                                 | `boolean` | No       | ✅      | ❌  |
@@ -104,7 +104,7 @@ type AndroidImageColors = {
 };
 ```
 
-On iOS, you will always get all of the following properties regardless of what you pass to the config object, plus the respective platform key:
+On iOS, you will always get all of the following properties regardless of what you pass to the config object, plus the respective platform key.
 
 ```ts
 type IOSImageColors = {
@@ -118,5 +118,5 @@ type IOSImageColors = {
 
 ### Notes
 
-- The `background` property in the iOS result and the `dominant` property in the android result are usually similar colors.
+- The `background` property in the iOS result and the `average` property in the android result are usually similar colors.
 - There is an [example](https://github.com/osamaq/react-native-image-colors/tree/master/example) react-native project.
