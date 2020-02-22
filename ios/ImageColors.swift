@@ -1,9 +1,9 @@
 //
 //  ImageColors.swift
-//  spotifyclone
+//  react-native-image-colors
 //
 //  Created by Osama Qarem on 2/16/20.
-//  Copyright © 2020 Facebook. All rights reserved.
+//  See LICENSE file for copyright.
 //
 import UIKit
 

@@ -15,7 +15,11 @@
     "baseUrl": "https://github.com/osamaq/react-native-image-colors"
   },
   "keywords": [
-    "react-native"
+    "react-native",
+    "react",
+    "image",
+    "dominant color",
+    "palette"
   ],
   "author": {
     "name": "Osama Qarem",

@@ -9,7 +9,7 @@ Fetch prominent colors from an image using a URL.
 
 <p align="center" >
   <kbd>
-    <img src="https://github.com/osamaq/react-native-image-colors/blob/master/assets/demo.gif" title="Demo">
+    <img src="https://github.com/osamaq/react-native-image-colors/raw/master/assets/demo.gif" title="Demo">
   </kbd>
   <br>
   <em>Example usage with a <a href="https://github.com/react-native-community/react-native-linear-gradient">gradient</a></em>
@@ -57,63 +57,73 @@ e.g.
 
 [`https://i.imgur.com/O3XSdU7.jpg`](https://i.imgur.com/O3XSdU7.jpg)
 
-### config
+### config (android)
 
-| Property       | Description                                                                                                                                                                                                                    | Type      | Required | Android | iOS |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | -------- | ------- | --- |
-| `dominant`     | Get the dominant color if true.                                                                                                                                                                                                | `boolean` | No       | ✅      | ❌  |
-| `average`      | Get the average color if true.                                                                                                                                                                                                 | `boolean` | No       | ✅      | ❌  |
-| `vibrant`      | Get the vibrant color if true.                                                                                                                                                                                                 | `boolean` | No       | ✅      | ❌  |
-| `darkVibrant`  | Get the dark vibrant color if true.                                                                                                                                                                                            | `boolean` | No       | ✅      | ❌  |
-| `lightVibrant` | Get the light vibrant color if true.                                                                                                                                                                                           | `boolean` | No       | ✅      | ❌  |
-| `darkVibrant`  | Get the dark vibrant color if true.                                                                                                                                                                                            | `boolean` | No       | ✅      | ❌  |
-| `darkMuted`    | Get the dark muted color if true.                                                                                                                                                                                              | `boolean` | No       | ✅      | ❌  |
-| `lightMuted`   | Get the light muted color if true.                                                                                                                                                                                             | `boolean` | No       | ✅      | ❌  |
-| `muted`        | Get the muted color if true.                                                                                                                                                                                                   | `boolean` | No       | ✅      | ❌  |
-| `defaultColor` | If a color property couldn't be retrieved, it will default to this hex color string. If this parameter is not passed, `#000000` will be used (**_important_**: shorthand hex will not work e.g. `#fff` ❌ **vs** `#ffffff` ✅) | `string`  | No       | ✅      | ✅  |
+| Property       | Description                                                                                                                                                                                                                    | Type      | Required |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | -------- |
+| `dominant`     | Get the dominant color if true.                                                                                                                                                                                                | `boolean` | No       |
+| `average`      | Get the average color if true.                                                                                                                                                                                                 | `boolean` | No       |
+| `vibrant`      | Get the vibrant color if true.                                                                                                                                                                                                 | `boolean` | No       |
+| `darkVibrant`  | Get the dark vibrant color if true.                                                                                                                                                                                            | `boolean` | No       |
+| `lightVibrant` | Get the light vibrant color if true.                                                                                                                                                                                           | `boolean` | No       |
+| `darkMuted`    | Get the dark muted color if true.                                                                                                                                                                                              | `boolean` | No       |
+| `lightMuted`   | Get the light muted color if true.                                                                                                                                                                                             | `boolean` | No       |
+| `muted`        | Get the muted color if true.                                                                                                                                                                                                   | `boolean` | No       |
+| `defaultColor` | If a color property couldn't be retrieved, it will default to this hex color string. If this parameter is not passed, `#000000` will be used (**_important_**: shorthand hex will not work e.g. `#fff` ❌ **vs** `#ffffff` ✅) | `string`  | No       |
 
-```ts
-type Config = {
-  dominant?: boolean;
-  average?: boolean;
-  vibrant?: boolean;
-  darkVibrant?: boolean;
-  lightVibrant?: boolean;
-  darkMuted?: boolean;
-  lightMuted?: boolean;
-  muted?: boolean;
-  defaultColor?: string;
-};
-```
+### config (iOS)
 
-### Result
+| Property       | Description                                                                                                                                   | Type     | Required |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- |
+| `defaultColor` | If a color property couldn't be retrieved, it will default to this hex color string. If this parameter is not passed, `#000000` will be used. | `string` | No       |
+
+### Result (android)
 
 On android, you will only get the color properties you marked as `true` in the config object, plus a `platform` key to help you figure out that this is the android result type.
 
-```ts
-type AndroidImageColors = {
-  dominant?: string;
-  average?: string;
-  vibrant?: string;
-  darkVibrant?: string;
-  lightVibrant?: string;
-  darkMuted?: string;
-  lightMuted?: string;
-  muted?: string;
-  platform: "android";
-};
-```
+| Property       | Type     |
+| -------------- | -------- |
+| `dominant`     | `string` |
+| `average`      | `string` |
+| `vibrant`      | `string` |
+| `darkVibrant`  | `string` |
+| `lightVibrant` | `string` |
+| `darkMuted`    | `string` |
+| `lightMuted`   | `string` |
+| `muted`        | `string` |
+| `platform`     | `string` |
+
+### Result (iOS)
 
 On iOS, you will always get all of the following properties regardless of what you pass to the config object, plus the respective platform key.
 
-```ts
-type IOSImageColors = {
-  background: string;
-  primary: string;
-  secondary: string;
-  detail: string;
-  platform: "ios";
-};
+| Property     | Type     |
+| ------------ | -------- |
+| `background` | `string` |
+| `primary`    | `string` |
+| `secondary`  | `string` |
+| `detail`     | `string` |
+| `platform`   | `string` |
+
+For TypeScript users, the [typings](https://github.com/osamaq/react-native-image-colors/blob/master/index.d.ts) might be easier to digest.
+
+### Example
+
+```js
+const colors = await ImageColors.getColors(this.URL, {
+  average: true,
+  defaultColor: "#000000"
+});
+
+if (colors.platform === "android") {
+  // Access android properties
+  // e.g.
+  const averageColor = colors.average;
+} else {
+  // Access iOS properties
+  // e.g.
+  const backgroundColor = colors.background;
+}
 ```
 
 ### Notes
