@@ -1,8 +1,19 @@
 declare module "react-native-image-colors" {
-  export function getColors(
+  export function getColors<C extends Config>(
     url: string,
-    config: Config
-  ): Promise<AndroidImageColors | IOSImageColors>;
+    config: C
+  ): Promise<
+    | (AndroidImageColors &
+        (C["dominant"] extends true ? { ["dominant"]: string } : {}) &
+        (C["average"] extends true ? { ["average"]: string } : {}) &
+        (C["vibrant"] extends true ? { ["vibrant"]: string } : {}) &
+        (C["darkVibrant"] extends true ? { ["darkVibrant"]: string } : {}) &
+        (C["lightVibrant"] extends true ? { ["lightVibrant"]: string } : {}) &
+        (C["darkMuted"] extends true ? { ["darkMuted"]: string } : {}) &
+        (C["lightMuted"] extends true ? { ["lightMuted"]: string } : {}) &
+        (C["muted"] extends true ? { ["muted"]: string } : {}))
+    | IOSImageColors
+  >;
 }
 
 type AndroidImageColors = {
