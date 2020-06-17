@@ -33,22 +33,22 @@ Rebuild the app.
 
 Install the pod, then rebuild the app.
 
-`cd ios && pod install`
+`npx pod-install`
 
-(if you face a compilation error while building, you probably need to create a blank swift file in XCode. [See #1](https://github.com/osamaq/react-native-image-colors/issues/1)).
+(**Important for RN < 0.62 users**: if you face a compilation error while building, your Xcode project likely does not support Swift which this package requires. You can fix this by either **a)** Creating a blank dummy swift file using Xcode or **b)** [Following steps 1,2,3 here](https://github.com/facebook/flipper/blob/4297b3061f14ceca4d184aa3eebd0731b5bf20f5/docs/getting-started.md#for-pure-objective-c-projects).
 
 ## Usage
 
 Start by importing the module
 
 ```js
-import ImageColors from "react-native-image-colors";
+import ImageColors from "react-native-image-colors"
 ```
 
 🎨 Fetch colors
 
 ```js
-const colors = await ImageColors.getColors(URL, config);
+const colors = await ImageColors.getColors(URL, config)
 ```
 
 ### URL
@@ -112,17 +112,17 @@ For TypeScript users, the [typings](https://github.com/osamaq/react-native-image
 ```js
 const colors = await ImageColors.getColors(this.URL, {
   average: true,
-  defaultColor: "#000000"
-});
+  defaultColor: "#000000",
+})
 
 if (colors.platform === "android") {
   // Access android properties
   // e.g.
-  const averageColor = colors.average;
+  const averageColor = colors.average
 } else {
   // Access iOS properties
   // e.g.
-  const backgroundColor = colors.background;
+  const backgroundColor = colors.background
 }
 ```
 
