@@ -1,5 +1,6 @@
 package com.osamaq;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -27,6 +28,7 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
     private boolean getDarkMuted;
     private boolean getLightMuted;
     private boolean getMuted;
+    private Integer pixelSpacing;
 
     ImageColorsModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -57,8 +59,13 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
 
         bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
 
-        // Pixel spacing is 5
-        for (int i = 0; i < pixels.length; i += 5) {
+        int spacing = 5;
+
+        if(pixelSpacing != null){
+            spacing = pixelSpacing;
+        }
+
+        for (int i = 0; i < pixels.length; i += spacing) {
             int color = pixels[i];
             R += Color.red(color);
             G += Color.green(color);
@@ -76,7 +83,7 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
         return Color.parseColor(colorHex);
     }
 
-    private void falsifyAll() {
+    private void initialState() {
         getAvg = false;
         getDominant = false;
         getVib = false;
@@ -85,10 +92,11 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
         getDarkMuted = false;
         getLightMuted = false;
         getMuted = false;
+        pixelSpacing = null;
     }
 
 
-    private void getBooleans(ReadableMap config) {
+    private void getConfig(ReadableMap config) {
         if (config.hasKey("average")) {
             getAvg = config.getBoolean("average");
         }
@@ -113,11 +121,14 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
         if (config.hasKey("muted")) {
             getMuted = config.getBoolean("muted");
         }
+        if (config.hasKey("pixelSpacing")) {
+            pixelSpacing = config.getInt("pixelSpacing");
+        }
     }
 
 
     @ReactMethod
-    public void getColors(String url, ReadableMap config, Promise promise) {
+    public void getColors(String uri, ReadableMap config, Promise promise) {
         try {
             String defColor;
             if (config.hasKey("defaultColor")) {
@@ -127,15 +138,26 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
             }
             int defColorInt = parseColorFromHex(defColor);
 
-            falsifyAll();
-            getBooleans(config);
+            initialState();
+            getConfig(config);
 
             WritableMap resultMap = Arguments.createMap();
             resultMap.putString("platform", "android");
 
-            URL parsedURL = new URL(url);
-            Bitmap image = BitmapFactory.decodeStream(parsedURL.openConnection().getInputStream());
-            if (image == null) throw new Exception("Invalid image");
+
+            Context context = getReactApplicationContext();
+            int resourceId = context.getResources().getIdentifier(uri, "drawable", context.getPackageName());
+            Bitmap image = null;
+
+            if(resourceId == 0){
+                // resource is not local
+                URL url = new URL(uri);
+                image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            }else{
+                image = BitmapFactory.decodeResource(context.getResources(), resourceId);
+            }
+
+            if (image == null) throw new Exception("Invalid image URI – failed to get image");
 
             if (getAvg) {
                 int rgbAvg = calculateAverageColor(image);
