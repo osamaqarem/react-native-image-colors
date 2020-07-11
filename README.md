@@ -8,11 +8,21 @@
 Fetch prominent colors from an image using a URL.
 
 <p align="center" >
-  <kbd>
-    <img src="https://github.com/osamaq/react-native-image-colors/raw/master/assets/demo.gif" title="Demo">
-  </kbd>
-  <br>
-  <em>Example usage with a <a href="https://github.com/react-native-community/react-native-linear-gradient">gradient</a></em>
+  <img
+    width="250px"
+    src="https://github.com/osamaq/react-native-image-colors/raw/master/assets/example1.png"
+    alt="Example 1"
+  />
+  <img
+    width="250px"
+    src="https://github.com/osamaq/react-native-image-colors/raw/master/assets/demo1.png"
+    alt="Demo 1"
+  />
+  <img
+    width="250px"
+    src="https://github.com/osamaq/react-native-image-colors/raw/master/assets/demo2.png"
+    alt="Demo 2"
+  />
 </p>
 
 This module is a wrapper around the [Palette](https://developer.android.com/reference/androidx/palette/graphics/Palette) class on Android and [UIImageColors](https://github.com/jathu/UIImageColors) on iOS.
@@ -21,7 +31,11 @@ This module is a wrapper around the [Palette](https://developer.android.com/refe
 
 ```
 $ npm install react-native-image-colors
-# --- or ---
+```
+
+or
+
+```
 $ yarn add react-native-image-colors
 ```
 
@@ -104,8 +118,6 @@ On iOS, you will always get all of the following properties regardless of what y
 | `secondary`  | `string` |
 | `detail`     | `string` |
 | `platform`   | `string` |
-
-For TypeScript users, the [typings](https://github.com/osamaq/react-native-image-colors/blob/master/index.d.ts) might be easier to digest.
 
 ### Example
 
