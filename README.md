@@ -5,7 +5,7 @@
 [![NPM Badge](https://img.shields.io/npm/v/react-native-image-colors)](https://www.npmjs.com/package/react-native-image-colors)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-%23ff69b4)
 
-Fetch prominent colors from an image using a URL.
+Fetch prominent colors from an image.
 
 <p align="center" >
   <img
@@ -16,12 +16,22 @@ Fetch prominent colors from an image using a URL.
   <img
     width="250px"
     src="https://github.com/osamaq/react-native-image-colors/raw/master/assets/demo1.png"
-    alt="Demo 1"
+    alt="Demo 1 Android"
+  />
+  <img
+    width="250px"
+    src="https://github.com/osamaq/react-native-image-colors/raw/master/assets/demo1_ios.png"
+    alt="Demo 1 iOS"
   />
   <img
     width="250px"
     src="https://github.com/osamaq/react-native-image-colors/raw/master/assets/demo2.png"
-    alt="Demo 2"
+    alt="Demo 2 Android"
+  />
+  <img
+    width="250px"
+    src="https://github.com/osamaq/react-native-image-colors/raw/master/assets/demo2_ios.png"
+    alt="Demo 2 iOS"
   />
 </p>
 
@@ -62,34 +72,44 @@ import ImageColors from "react-native-image-colors"
 🎨 Fetch colors
 
 ```js
-const colors = await ImageColors.getColors(URL, config)
+const colors = await ImageColors.getColors(URI, config)
 ```
 
-### URL
+### URI
 
-e.g.
+Can be a URL or a local asset.
 
-[`https://i.imgur.com/O3XSdU7.jpg`](https://i.imgur.com/O3XSdU7.jpg)
+- URL:
+
+  [`https://i.imgur.com/O3XSdU7.jpg`](https://i.imgur.com/O3XSdU7.jpg)
+
+- Local file:
+
+  ```js
+  const catImg = require("./images/cat.jpg")
+  ```
 
 ### config (android)
 
-| Property       | Description                                                                                                                                                                                                                    | Type      | Required |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | -------- |
-| `dominant`     | Get the dominant color if true.                                                                                                                                                                                                | `boolean` | No       |
-| `average`      | Get the average color if true.                                                                                                                                                                                                 | `boolean` | No       |
-| `vibrant`      | Get the vibrant color if true.                                                                                                                                                                                                 | `boolean` | No       |
-| `darkVibrant`  | Get the dark vibrant color if true.                                                                                                                                                                                            | `boolean` | No       |
-| `lightVibrant` | Get the light vibrant color if true.                                                                                                                                                                                           | `boolean` | No       |
-| `darkMuted`    | Get the dark muted color if true.                                                                                                                                                                                              | `boolean` | No       |
-| `lightMuted`   | Get the light muted color if true.                                                                                                                                                                                             | `boolean` | No       |
-| `muted`        | Get the muted color if true.                                                                                                                                                                                                   | `boolean` | No       |
-| `defaultColor` | If a color property couldn't be retrieved, it will default to this hex color string. If this parameter is not passed, `#000000` will be used (**_important_**: shorthand hex will not work e.g. `#fff` ❌ **vs** `#ffffff` ✅) | `string`  | No       |
+| Property       | Description                                                                                                                                                 | Type      | Required | Default     |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | ----------- |
+| `dominant`     | Get the dominant color.                                                                                                                                     | `boolean` | No       | `false`     |
+| `average`      | Get the average color.                                                                                                                                      | `boolean` | No       | `false`     |
+| `vibrant`      | Get the vibrant color.                                                                                                                                      | `boolean` | No       | `false`     |
+| `darkVibrant`  | Get the dark vibrant color.                                                                                                                                 | `boolean` | No       | `false`     |
+| `lightVibrant` | Get the light vibrant color.                                                                                                                                | `boolean` | No       | `false`     |
+| `darkMuted`    | Get the dark muted color.                                                                                                                                   | `boolean` | No       | `false`     |
+| `lightMuted`   | Get the light muted color.                                                                                                                                  | `boolean` | No       | `false`     |
+| `muted`        | Get the muted color.                                                                                                                                        | `boolean` | No       | `false`     |
+| `fallback`     | If a color property couldn't be retrieved, it will default to this hex color string (**note**: shorthand hex will not work e.g. `#fff` ❌ vs `#ffffff` ✅). | `string`  | No       | `"#000000"` |
+| `pixelSpacing` | How many pixels to skip when iterating over image pixels. Higher means better performance (**note**: value cannot be lower than 1).                         | number    | No       | `5`         |
 
 ### config (iOS)
 
-| Property       | Description                                                                                                                                   | Type     | Required |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- |
-| `defaultColor` | If a color property couldn't be retrieved, it will default to this hex color string. If this parameter is not passed, `#000000` will be used. | `string` | No       |
+| Property   | Description                                                                                                                                                 | Type                                                   | Required | Default     |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | -------- | ----------- |
+| `fallback` | If a color property couldn't be retrieved, it will default to this hex color string.                                                                        | `string`                                               | No       | `"#000000"` |
+| `quality`  | Highest implies no downscaling and very good colors, but it is very slow. See [UIImageColors](https://github.com/jathu/UIImageColors#uiimagecolors-objects) | `'lowest'` <br> `'low'` <br> `'high'` <br> `'highest'` | No       | `"low"`     |
 
 ### Result (android)
 
@@ -122,9 +142,11 @@ On iOS, you will always get all of the following properties regardless of what y
 ### Example
 
 ```js
-const colors = await ImageColors.getColors(this.URL, {
+const coolImage = require("./cool.jpg")
+
+const colors = await ImageColors.getColors(coolImage, {
   average: true,
-  defaultColor: "#000000",
+  fallback: "#228B22",
 })
 
 if (colors.platform === "android") {
@@ -140,5 +162,4 @@ if (colors.platform === "android") {
 
 ### Notes
 
-- The `background` property in the iOS result and the `average` property in the android result are usually similar colors.
 - There is an [example](https://github.com/osamaq/react-native-image-colors/tree/master/example) react-native project.
