@@ -217,7 +217,7 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
     - ReactCommon/jscallinvoker (= 0.61.5)
-  - RNImageColors (1.0.3):
+  - RNImageColors (1.1.4):
     - React
   - Yoga (1.14.0)
 
@@ -336,9 +336,9 @@ SPEC CHECKSUMS:
   React-RCTText: 9ccc88273e9a3aacff5094d2175a605efa854dbe
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
-  RNImageColors: 59addb0cb6fb1a6f66ca134608c83de8c2de5b72
+  RNImageColors: 9b765cc3a04b631e430c3be156fb84ee76da7f4a
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
 PODFILE CHECKSUM: e8feed2031013ef24d5038c0dc20775db46af082
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.3

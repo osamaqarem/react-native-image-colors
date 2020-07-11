@@ -2,7 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import ImageColors from 'react-native-image-colors';
 
-const URL = 'https://i.imgur.com/68jyjZT.jpg';
+const yunaUrl = 'https://i.imgur.com/68jyjZT.jpg';
+const catUrl = 'https://i.imgur.com/O3XSdU7.jpg';
+const catImg = require('./images/cat.jpg');
 
 const initialState = {
   colorOne: {value: '', name: ''},
@@ -18,7 +20,7 @@ export default function App() {
 
   useEffect(() => {
     const fetchColors = async () => {
-      const result = await ImageColors.getColors(URL, {
+      const result = await ImageColors.getColors(yunaUrl, {
         dominant: true,
         average: true,
         vibrant: true,
@@ -27,7 +29,9 @@ export default function App() {
         darkMuted: true,
         lightMuted: true,
         muted: true,
-        defaultColor: '#000000'
+        fallback: '#000000',
+        quality: 'low',
+        pixelSpacing: 5
       });
 
       if (result.platform === 'android') {
@@ -55,7 +59,11 @@ export default function App() {
   }, []);
 
   if (loading) {
-    return <Text style={styles.loading}>Loading...</Text>;
+    return (
+      <View style={styles.container}>
+        <Text style={styles.loading}>Loading...</Text>
+      </View>
+    );
   }
 
   return (
@@ -64,7 +72,11 @@ export default function App() {
         <Text style={styles.loading}>Result:</Text>
         <Text style={styles.result}>{colors.rawResult}</Text>
       </View>
-      <Image resizeMode="contain" style={styles.image} source={{uri: URL}} />
+      <Image
+        resizeMode="contain"
+        style={styles.image}
+        source={{uri: yunaUrl}}
+      />
       <View style={styles.row}>
         <Box name={colors.colorOne.name} value={colors.colorOne.value} />
         <Box name={colors.colorTwo.name} value={colors.colorTwo.value} />
