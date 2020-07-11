@@ -20,14 +20,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class ImageColorsModule extends ReactContextBaseJavaModule {
-    private boolean getAvg;
-    private boolean getDominant;
-    private boolean getVib;
-    private boolean getDarkVibrant;
-    private boolean getLightVibrant;
-    private boolean getDarkMuted;
-    private boolean getLightMuted;
-    private boolean getMuted;
     private Integer pixelSpacing;
 
     ImageColorsModule(ReactApplicationContext reactContext) {
@@ -83,50 +75,6 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
         return Color.parseColor(colorHex);
     }
 
-    private void initialState() {
-        getAvg = false;
-        getDominant = false;
-        getVib = false;
-        getDarkVibrant = false;
-        getLightVibrant = false;
-        getDarkMuted = false;
-        getLightMuted = false;
-        getMuted = false;
-        pixelSpacing = null;
-    }
-
-
-    private void getConfig(ReadableMap config) {
-        if (config.hasKey("average")) {
-            getAvg = config.getBoolean("average");
-        }
-        if (config.hasKey("dominant")) {
-            getDominant = config.getBoolean("dominant");
-        }
-        if (config.hasKey("vibrant")) {
-            getVib = config.getBoolean("vibrant");
-        }
-        if (config.hasKey("darkVibrant")) {
-            getDarkVibrant = config.getBoolean("darkVibrant");
-        }
-        if (config.hasKey("lightVibrant")) {
-            getLightVibrant = config.getBoolean("lightVibrant");
-        }
-        if (config.hasKey("darkMuted")) {
-            getDarkMuted = config.getBoolean("darkMuted");
-        }
-        if (config.hasKey("lightMuted")) {
-            getLightMuted = config.getBoolean("lightMuted");
-        }
-        if (config.hasKey("muted")) {
-            getMuted = config.getBoolean("muted");
-        }
-        if (config.hasKey("pixelSpacing")) {
-            pixelSpacing = config.getInt("pixelSpacing");
-        }
-    }
-
-
     @ReactMethod
     public void getColors(String uri, ReadableMap config, Promise promise) {
         try {
@@ -138,8 +86,10 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
             }
             int defColorInt = parseColorFromHex(defColor);
 
-            initialState();
-            getConfig(config);
+            pixelSpacing = null;
+            if (config.hasKey("pixelSpacing")) {
+                pixelSpacing = config.getInt("pixelSpacing");
+            }
 
             WritableMap resultMap = Arguments.createMap();
             resultMap.putString("platform", "android");
@@ -159,52 +109,43 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
 
             if (image == null) throw new Exception("Invalid image URI – failed to get image");
 
-            if (getAvg) {
-                int rgbAvg = calculateAverageColor(image);
-                String hexAvg = getHex(rgbAvg);
-                resultMap.putString("average", hexAvg);
-            }
-            if (getDominant || getVib || getDarkVibrant || getLightVibrant || getDarkMuted || getLightMuted || getMuted) {
+            int rgbAvg = calculateAverageColor(image);
+            String hexAvg = getHex(rgbAvg);
+            resultMap.putString("average", hexAvg);
+
                 Palette.Builder builder = new Palette.Builder(image);
                 builder.generate(palette -> {
                     try {
                         if (palette != null) {
-                            if (getDominant) {
                                 int rgb = palette.getDominantColor(defColorInt);
                                 String hex = getHex(rgb);
                                 resultMap.putString("dominant", hex);
-                            }
-                            if (getVib) {
-                                int rgb = palette.getVibrantColor(defColorInt);
-                                String hex = getHex(rgb);
-                                resultMap.putString("vibrant", hex);
-                            }
-                            if (getDarkVibrant) {
-                                int rgb = palette.getDarkVibrantColor(defColorInt);
-                                String hex = getHex(rgb);
-                                resultMap.putString("darkVibrant", hex);
-                            }
-                            if (getLightVibrant) {
-                                int rgb = palette.getLightVibrantColor(defColorInt);
-                                String hex = getHex(rgb);
-                                resultMap.putString("lightVibrant", hex);
-                            }
-                            if (getDarkMuted) {
-                                int rgb = palette.getDarkMutedColor(defColorInt);
-                                String hex = getHex(rgb);
-                                resultMap.putString("darkMuted", hex);
-                            }
-                            if (getLightMuted) {
-                                int rgb = palette.getLightMutedColor(defColorInt);
-                                String hex = getHex(rgb);
-                                resultMap.putString("lightMuted", hex);
-                            }
-                            if (getMuted) {
-                                int rgb = palette.getMutedColor(defColorInt);
-                                String hex = getHex(rgb);
-                                resultMap.putString("muted", hex);
-                            }
-                            promise.resolve(resultMap);
+
+                                int rgb1 = palette.getVibrantColor(defColorInt);
+                                String hex1 = getHex(rgb1);
+                                resultMap.putString("vibrant", hex1);
+
+                                int rgb2 = palette.getDarkVibrantColor(defColorInt);
+                                String hex2 = getHex(rgb2);
+                                resultMap.putString("darkVibrant", hex2);
+
+                                int rgb3 = palette.getLightVibrantColor(defColorInt);
+                                String hex3 = getHex(rgb3);
+                                resultMap.putString("lightVibrant", hex3);
+
+                                int rgb4 = palette.getDarkMutedColor(defColorInt);
+                                String hex4 = getHex(rgb4);
+                                resultMap.putString("darkMuted", hex4);
+
+                                int rgb5 = palette.getLightMutedColor(defColorInt);
+                                String hex5 = getHex(rgb5);
+                                resultMap.putString("lightMuted", hex5);
+
+                                int rgb6 = palette.getMutedColor(defColorInt);
+                                String hex6 = getHex(rgb6);
+                                resultMap.putString("muted", hex6);
+
+                                promise.resolve(resultMap);
                         } else {
                             throw new Exception("Palette was null");
                         }
@@ -212,9 +153,7 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
                         handleException(e, promise);
                     }
                 });
-            } else {
-                promise.resolve(resultMap);
-            }
+          
         } catch (MalformedURLException e) {
             handleException(new Exception("Invalid URL"), promise);
         } catch (Exception e) {
