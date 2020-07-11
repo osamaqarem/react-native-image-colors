@@ -1,5 +1,16 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, Image } from "react-native"
 
-const { ImageColors } = NativeModules;
+const { ImageColors: ImageColorsModule } = NativeModules
 
-export default ImageColors;
+const ImageColors = {
+  getColors: (source, config) => {
+    if (typeof source === "string") {
+      return ImageColorsModule.getColors(source, config)
+    } else {
+      const resolvedSource = Image.resolveAssetSource(source).uri
+      return ImageColorsModule.getColors(resolvedSource, config)
+    }
+  },
+}
+
+export default ImageColors
