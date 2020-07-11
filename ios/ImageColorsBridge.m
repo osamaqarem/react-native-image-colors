@@ -11,7 +11,7 @@
 @interface RCT_EXTERN_MODULE(ImageColors, NSObject)
 
 RCT_EXTERN_METHOD(
-                  getColors: (NSString *)url
+                  getColors: (NSString *)uri
                   config: (NSDictionary *)config
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject

@@ -9,13 +9,24 @@ import UIKit
 
 @objc(ImageColors)
 class ImageColors : NSObject{
-    private let defaultColor = "#000"
+    private let fallback = "#000"
     
     enum ERRORS {
         static let ERROR_1 = "Invalid URL";
         static let ERROR_2 = "Could not download image.";
         static let ERROR_3 = "Could not parse image.";
     }
+    
+    private func getQuality(qualityOption : String) -> UIImageColorsQuality {
+            switch qualityOption  {
+            case "lowest": return UIImageColorsQuality.lowest
+            case "low": return UIImageColorsQuality.low
+            case "high": return UIImageColorsQuality.high
+            case "highest": return UIImageColorsQuality.highest
+            default: return UIImageColorsQuality.low
+        }
+    }
+
     
     private func toHexString(color: UIColor) -> String {
         let comp = color.cgColor.components;
@@ -30,57 +41,65 @@ class ImageColors : NSObject{
     }
     
     @objc
-    func getColors(_ url : String, config: NSDictionary, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void{
+    func getColors(_ uri : String, config: NSDictionary, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void{
         
         let defColor = config.value(forKey: "defaultColor") as? String
         
+        guard let parsedUri = URL(string: uri) else{
+            let error = NSError.init(domain: ImageColors.ERRORS.ERROR_1, code: -1)
+            reject("Error", ImageColors.ERRORS.ERROR_1, error)
+            return
+        }
         
-        if let parsedURL = URL(string: url) {
-            if let imageData = try? Data(contentsOf: parsedURL){
-                if let uiImage = UIImage(data: imageData) {
-                    uiImage.getColors(quality: UIImageColorsQuality.low){ colors in
+            do {
+                let imageData = try Data(contentsOf: parsedUri)
+                guard let uiImage = UIImage(data: imageData) else {
+                    let error = NSError.init(domain: ImageColors.ERRORS.ERROR_3, code: -3)
+                    reject("Error", ImageColors.ERRORS.ERROR_3, error)
+                    return
+                }
+
+                let qualityProp = config["quality"] as? String ?? "low"
+                let quality = getQuality(qualityOption: qualityProp)
+                
+                uiImage.getColors(quality: quality){ colors in
                         
                         var resultDict : Dictionary<String, String> = ["platform" : "ios"]
                         
                         if let background = colors?.background{
                             resultDict["background"] = self.toHexString(color: background)
-                        }else{
-                            resultDict["background"] = defColor ?? self.defaultColor
+                        } else {
+                            resultDict["background"] = defColor ?? self.fallback
                         }
                         
                         
                         if let primary = colors?.primary{
                             resultDict["primary"] = self.toHexString(color: primary)
-                        }else{
-                            resultDict["primary"] = defColor ?? self.defaultColor
+                        } else {
+                            resultDict["primary"] = defColor ?? self.fallback
                         }
                         
                         
                         if let secondary = colors?.secondary{
                             resultDict["secondary"] = self.toHexString(color: secondary)
-                        }else{
-                            resultDict["secondary"] = defColor ?? self.defaultColor
+                        } else {
+                            resultDict["secondary"] = defColor ?? self.fallback
                         }
                         
                         if let detail = colors?.detail{
                             resultDict["detail"] = self.toHexString(color: detail)
-                        }else{
-                            resultDict["detail"] = defColor ?? self.defaultColor
+                        } else {
+                            resultDict["detail"] = defColor ?? self.fallback
                         }
                         
                         resolve(resultDict)
                     }
-                }else{
-                    let error = NSError.init(domain: ImageColors.ERRORS.ERROR_3, code: -3)
-                    reject("Error", ImageColors.ERRORS.ERROR_3, error)
-                }
-            }else{
+                
+            }
+            catch {
                 let error = NSError.init(domain: ImageColors.ERRORS.ERROR_2, code: -2)
                 reject("Error", ImageColors.ERRORS.ERROR_2, error)
             }
-        }else{
-            let error = NSError.init(domain: ImageColors.ERRORS.ERROR_1, code: -1)
-            reject("Error", ImageColors.ERRORS.ERROR_1, error)
-        }
+    
     }
 }
