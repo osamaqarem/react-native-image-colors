@@ -6,7 +6,6 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "release": "release-it"
   },
   "homepage": "https://github.com/osamaq/react-native-image-colors",
@@ -19,7 +18,9 @@
     "react-native",
     "react",
     "image",
-    "dominant color",
+    "dominant",
+    "average",
+    "color",
     "palette"
   ],
   "author": {
@@ -30,6 +31,9 @@
     "git": {
       "commitMessage": "chore: release ${version}",
       "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
     },
     "github": {
       "release": true

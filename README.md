@@ -89,17 +89,17 @@ Can be a URL or a local asset.
   const catImg = require("./images/cat.jpg")
   ```
 
-### config (android)
+### config
 
 | Property                      | Description                                                                                                                                                 | Type                                                   | Required | Default     |
 | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | -------- | ----------- |
 | `fallback`                    | If a color property couldn't be retrieved, it will default to this hex color string (**note**: do not use shorthand hex. e.g. `#fff`).                      | `string`                                               | No       | `"#000000"` |
-| `pixelSpacing` (Android only) | How many pixels to skip when iterating over image pixels. Higher means better performance (**note**: value cannot be lower than 1).                         | number                                                 | No       | `5`         |
+| `pixelSpacing` (Android only) | How many pixels to skip when iterating over image pixels. Higher means better performance (**note**: value cannot be lower than 1).                         | `number`                                               | No       | `5`         |
 | `quality` (iOS only)          | Highest implies no downscaling and very good colors, but it is very slow. See [UIImageColors](https://github.com/jathu/UIImageColors#uiimagecolors-objects) | `'lowest'` <br> `'low'` <br> `'high'` <br> `'highest'` | No       | `"low"`     |
 
 ### Result (android)
 
-On android, you will get the following colors, plus a `platform` key to help you figure out that this is the android result type.
+On android, you will get an object with the following color properties, plus a `platform` key to help you figure out that this is the android result type.
 
 | Property       | Type     |
 | -------------- | -------- |
@@ -115,7 +115,7 @@ On android, you will get the following colors, plus a `platform` key to help you
 
 ### Result (iOS)
 
-On iOS, you get the following colors, plus the respective platform key.
+On iOS, you get the following color properties object, plus the respective platform key.
 
 | Property     | Type     |
 | ------------ | -------- |
@@ -147,4 +147,4 @@ if (colors.platform === "android") {
 
 ### Notes
 
-- There is an [example](https://github.com/osamaq/react-native-image-colors/tree/master/example) react-native project.
+- There is an [example](https://github.com/osamaq/react-native-image-colors/blob/master/example/App.js) react-native project.
