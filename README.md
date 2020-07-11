@@ -59,7 +59,7 @@ Install the pod, then rebuild the app.
 
 `npx pod-install`
 
-(**Important for RN < 0.62 users**: if you face a compilation error while building, your Xcode project likely does not support Swift which this package requires. You can fix this by either **a)** Creating a blank dummy swift file using Xcode or **b)** [Following steps 1,2,3 here](https://github.com/facebook/flipper/blob/4297b3061f14ceca4d184aa3eebd0731b5bf20f5/docs/getting-started.md#for-pure-objective-c-projects).
+> **RN < 0.62**: if you face a compilation error while building, your Xcode project likely does not support Swift which this package requires. You can fix this by either **a)** Creating a blank dummy swift file using Xcode or **b)** [Following steps 1,2,3 here](https://github.com/facebook/flipper/blob/4297b3061f14ceca4d184aa3eebd0731b5bf20f5/docs/getting-started.md#for-pure-objective-c-projects).
 
 ## Usage
 
@@ -91,29 +91,15 @@ Can be a URL or a local asset.
 
 ### config (android)
 
-| Property       | Description                                                                                                                                                 | Type      | Required | Default     |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | ----------- |
-| `dominant`     | Get the dominant color.                                                                                                                                     | `boolean` | No       | `false`     |
-| `average`      | Get the average color.                                                                                                                                      | `boolean` | No       | `false`     |
-| `vibrant`      | Get the vibrant color.                                                                                                                                      | `boolean` | No       | `false`     |
-| `darkVibrant`  | Get the dark vibrant color.                                                                                                                                 | `boolean` | No       | `false`     |
-| `lightVibrant` | Get the light vibrant color.                                                                                                                                | `boolean` | No       | `false`     |
-| `darkMuted`    | Get the dark muted color.                                                                                                                                   | `boolean` | No       | `false`     |
-| `lightMuted`   | Get the light muted color.                                                                                                                                  | `boolean` | No       | `false`     |
-| `muted`        | Get the muted color.                                                                                                                                        | `boolean` | No       | `false`     |
-| `fallback`     | If a color property couldn't be retrieved, it will default to this hex color string (**note**: shorthand hex will not work e.g. `#fff` ❌ vs `#ffffff` ✅). | `string`  | No       | `"#000000"` |
-| `pixelSpacing` | How many pixels to skip when iterating over image pixels. Higher means better performance (**note**: value cannot be lower than 1).                         | number    | No       | `5`         |
-
-### config (iOS)
-
-| Property   | Description                                                                                                                                                 | Type                                                   | Required | Default     |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | -------- | ----------- |
-| `fallback` | If a color property couldn't be retrieved, it will default to this hex color string.                                                                        | `string`                                               | No       | `"#000000"` |
-| `quality`  | Highest implies no downscaling and very good colors, but it is very slow. See [UIImageColors](https://github.com/jathu/UIImageColors#uiimagecolors-objects) | `'lowest'` <br> `'low'` <br> `'high'` <br> `'highest'` | No       | `"low"`     |
+| Property                      | Description                                                                                                                                                 | Type                                                   | Required | Default     |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | -------- | ----------- |
+| `fallback`                    | If a color property couldn't be retrieved, it will default to this hex color string (**note**: do not use shorthand hex. e.g. `#fff`).                      | `string`                                               | No       | `"#000000"` |
+| `pixelSpacing` (Android only) | How many pixels to skip when iterating over image pixels. Higher means better performance (**note**: value cannot be lower than 1).                         | number                                                 | No       | `5`         |
+| `quality` (iOS only)          | Highest implies no downscaling and very good colors, but it is very slow. See [UIImageColors](https://github.com/jathu/UIImageColors#uiimagecolors-objects) | `'lowest'` <br> `'low'` <br> `'high'` <br> `'highest'` | No       | `"low"`     |
 
 ### Result (android)
 
-On android, you will only get the color properties you marked as `true` in the config object, plus a `platform` key to help you figure out that this is the android result type.
+On android, you will get the following colors, plus a `platform` key to help you figure out that this is the android result type.
 
 | Property       | Type     |
 | -------------- | -------- |
@@ -129,7 +115,7 @@ On android, you will only get the color properties you marked as `true` in the c
 
 ### Result (iOS)
 
-On iOS, you will always get all of the following properties regardless of what you pass to the config object, plus the respective platform key.
+On iOS, you get the following colors, plus the respective platform key.
 
 | Property     | Type     |
 | ------------ | -------- |
@@ -145,7 +131,6 @@ On iOS, you will always get all of the following properties regardless of what y
 const coolImage = require("./cool.jpg")
 
 const colors = await ImageColors.getColors(coolImage, {
-  average: true,
   fallback: "#228B22",
 })
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, SafeAreaView} from 'react-native';
 import ImageColors from 'react-native-image-colors';
 
 const yunaUrl = 'https://i.imgur.com/68jyjZT.jpg';
@@ -11,7 +11,7 @@ const initialState = {
   colorTwo: {value: '', name: ''},
   colorThree: {value: '', name: ''},
   colorFour: {value: '', name: ''},
-  rawResult: {value: '', name: ''}
+  rawResult: {value: '', name: ''},
 };
 
 export default function App() {
@@ -21,17 +21,9 @@ export default function App() {
   useEffect(() => {
     const fetchColors = async () => {
       const result = await ImageColors.getColors(yunaUrl, {
-        dominant: true,
-        average: true,
-        vibrant: true,
-        darkVibrant: true,
-        lightVibrant: true,
-        darkMuted: true,
-        lightMuted: true,
-        muted: true,
         fallback: '#000000',
         quality: 'low',
-        pixelSpacing: 5
+        pixelSpacing: 5,
       });
 
       if (result.platform === 'android') {
@@ -40,7 +32,7 @@ export default function App() {
           colorTwo: {value: result.dominant, name: 'dominant'},
           colorThree: {value: result.vibrant, name: 'vibrant'},
           colorFour: {value: result.darkVibrant, name: 'darkVibrant'},
-          rawResult: JSON.stringify(result)
+          rawResult: JSON.stringify(result),
         });
       } else {
         setColors({
@@ -48,7 +40,7 @@ export default function App() {
           colorTwo: {value: result.detail, name: 'detail'},
           colorThree: {value: result.primary, name: 'primary'},
           colorFour: {value: result.secondary, name: 'secondary'},
-          rawResult: JSON.stringify(result)
+          rawResult: JSON.stringify(result),
         });
       }
 
@@ -68,10 +60,10 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.resultContainer}>
+      <SafeAreaView style={styles.resultContainer}>
         <Text style={styles.loading}>Result:</Text>
         <Text style={styles.result}>{colors.rawResult}</Text>
-      </View>
+      </SafeAreaView>
       <Image
         resizeMode="contain"
         style={styles.image}
@@ -89,14 +81,14 @@ export default function App() {
   );
 }
 
-const Box = props => {
+const Box = (props) => {
   return (
     <View
       style={[
         styles.box,
         {
-          backgroundColor: props.value
-        }
+          backgroundColor: props.value,
+        },
       ]}>
       <Text style={styles.colorName}>{props.name}</Text>
     </View>
@@ -106,39 +98,39 @@ const Box = props => {
 const styles = StyleSheet.create({
   image: {
     width: '100%',
-    height: 250
+    height: 250,
   },
   colorName: {
     backgroundColor: 'white',
     padding: 4,
-    fontSize: 18
+    fontSize: 18,
   },
   box: {
     flex: 1,
     backgroundColor: 'red',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   row: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   resultContainer: {
     flex: 1,
-    padding: 20
+    padding: 20,
   },
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   loading: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 10
+    margin: 10,
   },
   result: {
     textAlign: 'center',
-    color: '#333333'
-  }
+    color: '#333333',
+  },
 });
