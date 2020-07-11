@@ -16,7 +16,7 @@ declare module "react-native-image-colors" {
   >;
 }
 
-type AndroidImageColors = {
+export type AndroidImageColors = {
   dominant?: string;
   average?: string;
   vibrant?: string;
@@ -28,15 +28,16 @@ type AndroidImageColors = {
   platform: "android";
 };
 
-type IOSImageColors = {
+export type IOSImageColors = {
   background: string;
   primary: string;
   secondary: string;
   detail: string;
   platform: "ios";
+  quality: "lowest" | "low" | "high" | "highest";
 };
 
-type Config = {
+export type Config = {
   defaultColor?: string;
   dominant?: boolean;
   average?: boolean;
@@ -45,5 +46,6 @@ type Config = {
   lightVibrant?: boolean;
   darkMuted?: boolean;
   lightMuted?: boolean;
+  pixelSpacing?: number;
   muted?: boolean;
 };
