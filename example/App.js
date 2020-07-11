@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import ImageColors from 'react-native-image-colors';
 
-const URL = 'https://i.imgur.com/O3XSdU7.jpg';
+const URL = 'https://i.imgur.com/68jyjZT.jpg';
 
 const initialState = {
   colorOne: {value: '', name: ''},
@@ -35,7 +35,7 @@ export default function App() {
           colorOne: {value: result.average, name: 'average'},
           colorTwo: {value: result.dominant, name: 'dominant'},
           colorThree: {value: result.vibrant, name: 'vibrant'},
-          colorFour: {value: result.lightVibrant, name: 'lightVibrant'},
+          colorFour: {value: result.darkVibrant, name: 'darkVibrant'},
           rawResult: JSON.stringify(result)
         });
       } else {
