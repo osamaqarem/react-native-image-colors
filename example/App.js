@@ -11,7 +11,7 @@ const initialState = {
   colorTwo: {value: '', name: ''},
   colorThree: {value: '', name: ''},
   colorFour: {value: '', name: ''},
-  rawResult: {value: '', name: ''},
+  rawResult: '',
 };
 
 export default function App() {
