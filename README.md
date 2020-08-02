@@ -101,17 +101,17 @@ Can be a URL or a local asset.
 
 On android, you will get an object with the following color properties, plus a `platform` key to help you figure out that this is the android result type.
 
-| Property       | Type     |
-| -------------- | -------- |
-| `dominant`     | `string` |
-| `average`      | `string` |
-| `vibrant`      | `string` |
-| `darkVibrant`  | `string` |
-| `lightVibrant` | `string` |
-| `darkMuted`    | `string` |
-| `lightMuted`   | `string` |
-| `muted`        | `string` |
-| `platform`     | `string` |
+| Property       | Type      |
+| -------------- | --------- |
+| `dominant`     | `string`  |
+| `average`      | `string`  |
+| `vibrant`      | `string`  |
+| `darkVibrant`  | `string`  |
+| `lightVibrant` | `string`  |
+| `darkMuted`    | `string`  |
+| `lightMuted`   | `string`  |
+| `muted`        | `string`  |
+| `platform`     | `android` |
 
 ### Result (iOS)
 
@@ -123,7 +123,7 @@ On iOS, you get the following color properties object, plus the respective platf
 | `primary`    | `string` |
 | `secondary`  | `string` |
 | `detail`     | `string` |
-| `platform`   | `string` |
+| `platform`   | `ios`    |
 
 ### Example
 
