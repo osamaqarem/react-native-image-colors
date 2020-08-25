@@ -78,18 +78,19 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getColors(String uri, ReadableMap config, Promise promise) {
         try {
-            String defColor;
-            if (config.hasKey("defaultColor")) {
-                defColor = config.getString("defaultColor");
-            } else {
-                defColor = "#000000";
-            }
-            int defColorInt = parseColorFromHex(defColor);
-
+            String defColor = "#000000";
             pixelSpacing = null;
-            if (config.hasKey("pixelSpacing")) {
-                pixelSpacing = config.getInt("pixelSpacing");
+
+            if (config != null){
+                if (config.hasKey("defaultColor")) {
+                    defColor = config.getString("defaultColor");
+                }
+                if (config.hasKey("pixelSpacing")) {
+                    pixelSpacing = config.getInt("pixelSpacing");
+                }
             }
+
+            int defColorInt = parseColorFromHex(defColor);
 
             WritableMap resultMap = Arguments.createMap();
             resultMap.putString("platform", "android");
