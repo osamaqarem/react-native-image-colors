@@ -1,7 +1,7 @@
 {
   "name": "react-native-image-colors",
   "title": "React Native Image Colors",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Fetch prominent colors from an image.",
   "main": "index.js",
   "types": "index.d.ts",
