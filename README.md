@@ -77,7 +77,7 @@ const colors = await ImageColors.getColors(URI, config)
 
 ### URI
 
-Can be a URL or a local asset.
+Can be:
 
 - URL:
 
@@ -88,6 +88,14 @@ Can be a URL or a local asset.
   ```js
   const catImg = require("./images/cat.jpg")
   ```
+
+- Base64:
+
+  ```js
+  const catImgBase64 = "data:image/jpeg;base64,/9j/4Ri..."
+  ```
+
+  > The mime type prefix for base64 is required (e.g. data:image/png;base64).
 
 ### config
 

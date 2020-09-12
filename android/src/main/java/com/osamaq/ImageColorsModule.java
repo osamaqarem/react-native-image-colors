@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.util.Base64;
 
 import androidx.annotation.NonNull;
 import androidx.palette.graphics.Palette;
@@ -17,10 +18,11 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
 
 public class ImageColorsModule extends ReactContextBaseJavaModule {
     private Integer pixelSpacing;
+    private static final String base64Scheme = "data";
 
     ImageColorsModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -76,7 +78,7 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getColors(String uri, ReadableMap config, Promise promise) {
+    public void getColors(String source, ReadableMap config, Promise promise) {
         try {
             String defColor = "#000000";
             pixelSpacing = null;
@@ -97,14 +99,26 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
 
 
             Context context = getReactApplicationContext();
-            int resourceId = context.getResources().getIdentifier(uri, "drawable", context.getPackageName());
+            int resourceId = context.getResources().getIdentifier(source, "drawable", context.getPackageName());
             Bitmap image = null;
 
-            if(resourceId == 0){
-                // resource is not local
-                URL url = new URL(uri);
-                image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            }else{
+            if (resourceId == 0) {
+                // resource is not a local file
+                // could be a URL, base64.
+                URI uri = new URI(source);
+                String scheme = uri.getScheme();
+
+                if(scheme == null) throw new Exception("Invalid URI scheme");
+
+                if (scheme.equals(base64Scheme)) {
+                    String[] parts = source.split(",");
+                    String base64Uri = parts[1];
+                    byte[] decodedString = Base64.decode(base64Uri, Base64.DEFAULT);
+                    image = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                } else {
+                    image = BitmapFactory.decodeStream(uri.toURL().openConnection().getInputStream());
+                }
+            } else {
                 image = BitmapFactory.decodeResource(context.getResources(), resourceId);
             }
 
@@ -154,7 +168,7 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
                         handleException(e, promise);
                     }
                 });
-          
+
         } catch (MalformedURLException e) {
             handleException(new Exception("Invalid URL"), promise);
         } catch (Exception e) {
