@@ -1,7 +1,7 @@
 declare module "react-native-image-colors" {
   export function getColors<C extends Config>(
     url: string,
-    config: C
+    config?: C
   ): Promise<AndroidImageColors | IOSImageColors>;
 }
 
