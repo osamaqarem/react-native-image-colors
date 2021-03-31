@@ -1,21 +1,43 @@
 {
   "name": "react-native-image-colors",
-  "title": "React Native Image Colors",
   "version": "1.2.5",
   "description": "Fetch prominent colors from an image.",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "lib/commonjs/index",
+  "module": "lib/module/index",
+  "types": "lib/typescript/index.d.ts",
+  "react-native": "src/index",
+  "source": "src/index",
+  "files": [
+    "src",
+    "lib",
+    "android",
+    "ios",
+    "RNImageColors.podspec",
+    "!example",
+    "!lib/typescript/example",
+    "!ios/build",
+    "!ios/ImageColors.xcodeproj/xcuserdata",
+    "!ios/ImageColors.xcodeproj/project.xcworkspace",
+    "!android/build",
+    "!android/.gradle",
+    "!android/.idea",
+    "!android/app/build"
+  ],
   "scripts": {
-    "release": "release-it"
-  },
-  "homepage": "https://github.com/osamaq/react-native-image-colors",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/osamaq/react-native-image-colors.git",
-    "baseUrl": "https://github.com/osamaq/react-native-image-colors"
+    "test": "jest",
+    "typescript": "tsc --noEmit",
+    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "prepare": "bob build",
+    "release": "release-it",
+    "release-dry-run": "release-it --dry-run",
+    "example": "yarn --cwd example",
+    "pods": "cd example && pod-install --quiet",
+    "bootstrap": "yarn example && yarn && yarn pods"
   },
   "keywords": [
     "react-native",
+    "ios",
+    "android",
     "react",
     "image",
     "dominant",
@@ -23,9 +45,58 @@
     "color",
     "palette"
   ],
-  "author": {
-    "name": "Osama Qarem",
-    "email": "osamaqarem@gmail.com"
+  "repository": "https://github.com/osamaqarem/react-native-image-colors",
+  "author": "Osama Qarem <osamaqarem@gmail.com> (https://github.com/osamaqarem)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/osamaqarem/react-native-image-colors/issues"
+  },
+  "homepage": "https://github.com/osamaqarem/react-native-image-colors#readme",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "^11.0.0",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "@release-it/conventional-changelog": "^2.0.0",
+    "@types/jest": "^26.0.0",
+    "@types/react": "^16.9.19",
+    "@types/react-native": "0.62.13",
+    "commitlint": "^11.0.0",
+    "eslint": "^7.2.0",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "husky": "^4.2.5",
+    "jest": "^26.0.1",
+    "pod-install": "^0.1.0",
+    "prettier": "^2.0.5",
+    "react": "16.13.1",
+    "react-native": "0.63.4",
+    "react-native-builder-bob": "^0.18.1",
+    "release-it": "^14.2.2",
+    "typescript": "^4.1.3"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "jest": {
+    "preset": "react-native",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/example/node_modules",
+      "<rootDir>/lib/"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "yarn lint && yarn typescript"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "release-it": {
     "git": {
@@ -37,19 +108,57 @@
     },
     "github": {
       "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular"
+      }
     }
   },
-  "license": "MIT",
-  "licenseFilename": "LICENSE",
-  "readmeFilename": "README.md",
-  "peerDependencies": {
-    "react": "^16.8.1",
-    "react-native": ">=0.60.0-rc.0 <1.0.x"
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@react-native-community",
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "quoteProps": "consistent",
+          "singleQuote": true,
+          "tabWidth": 2,
+          "trailingComma": "es5",
+          "useTabs": false,
+          "semi": false
+        }
+      ]
+    }
   },
-  "devDependencies": {
-    "@release-it/conventional-changelog": "^1.1.4",
-    "react": "^16.9.0",
-    "react-native": "^0.61.5",
-    "release-it": "^13.6.5"
+  "eslintIgnore": [
+    "node_modules/",
+    "lib/"
+  ],
+  "prettier": {
+    "quoteProps": "consistent",
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "useTabs": false,
+    "semi": false
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      "commonjs",
+      "module",
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
+    ]
   }
 }
