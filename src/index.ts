@@ -1,5 +1,5 @@
 import { NativeModules, Image } from 'react-native'
-import type { Config } from 'src/types'
+import type { Config } from './types'
 
 const { ImageColors: ImageColorsModule } = NativeModules
 
