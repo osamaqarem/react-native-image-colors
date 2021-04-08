@@ -155,4 +155,4 @@ if (colors.platform === "android") {
 
 ### Notes
 
-- There is an [example](https://github.com/osamaq/react-native-image-colors/blob/master/example/App.js) react-native project.
+- There is an [example](https://github.com/osamaqarem/react-native-image-colors/blob/master/example/src/App.js) react-native project.
