@@ -24,3 +24,12 @@ export interface Config {
   pixelSpacing?: number
   quality?: 'lowest' | 'low' | 'high' | 'highest'
 }
+
+declare function GetColors<C extends Config>(
+  url: string,
+  config?: C
+): Promise<AndroidImageColors | IOSImageColors>
+
+export interface RNImageColorsModule {
+  getColors: typeof GetColors
+}

@@ -1,15 +1,15 @@
 import { NativeModules, Image } from 'react-native'
-import type { Config } from './types'
+import type { RNImageColorsModule } from './types'
 
-const { ImageColors: ImageColorsModule } = NativeModules
+const { ImageColors: RNImageColors } = NativeModules
 
-const ImageColors = {
-  getColors: (source: string, config: Config) => {
+const ImageColors: RNImageColorsModule = {
+  getColors: (source, config) => {
     if (typeof source === 'string') {
-      return ImageColorsModule.getColors(source, config)
+      return RNImageColors.getColors(source, config)
     } else {
       const resolvedSource = Image.resolveAssetSource(source).uri
-      return ImageColorsModule.getColors(resolvedSource, config)
+      return RNImageColors.getColors(resolvedSource, config)
     }
   },
 }
