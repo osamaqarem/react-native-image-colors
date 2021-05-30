@@ -1,4 +1,4 @@
-import type { cache } from 'src/cache'
+import type { cache } from './cache'
 
 export interface AndroidImageColors {
   dominant?: string
