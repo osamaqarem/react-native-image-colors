@@ -24,6 +24,7 @@ export default function App() {
         fallback: '#000000',
         quality: 'low',
         pixelSpacing: 5,
+        cache: true,
       })
 
       if (result.platform === 'android') {

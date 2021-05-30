@@ -1,3 +1,5 @@
+import type { cache } from 'src/cache'
+
 export interface AndroidImageColors {
   dominant?: string
   average?: string
@@ -23,13 +25,18 @@ export interface Config {
   fallback?: string
   pixelSpacing?: number
   quality?: 'lowest' | 'low' | 'high' | 'highest'
+  cache?: boolean
+  key?: string
 }
+
+export type ImageColorsResult = AndroidImageColors | IOSImageColors
 
 declare function GetColors<C extends Config>(
   url: string,
   config?: C
-): Promise<AndroidImageColors | IOSImageColors>
+): Promise<ImageColorsResult>
 
 export interface RNImageColorsModule {
   getColors: typeof GetColors
+  cache: typeof cache
 }
