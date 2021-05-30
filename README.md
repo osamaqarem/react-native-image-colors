@@ -66,7 +66,7 @@ Install the pod, then rebuild the app.
 Start by importing the module
 
 ```js
-import ImageColors from "react-native-image-colors"
+import ImageColors from 'react-native-image-colors'
 ```
 
 🎨 Fetch colors
@@ -86,24 +86,26 @@ Can be:
 - Local file:
 
   ```js
-  const catImg = require("./images/cat.jpg")
+  const catImg = require('./images/cat.jpg')
   ```
 
 - Base64:
 
   ```js
-  const catImgBase64 = "data:image/jpeg;base64,/9j/4Ri..."
+  const catImgBase64 = 'data:image/jpeg;base64,/9j/4Ri...'
   ```
 
   > The mime type prefix for base64 is required (e.g. data:image/png;base64).
 
 ### config
 
-| Property                      | Description                                                                                                                                                 | Type                                                   | Required | Default     |
-| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | -------- | ----------- |
-| `fallback`                    | If a color property couldn't be retrieved, it will default to this hex color string (**note**: do not use shorthand hex. e.g. `#fff`).                      | `string`                                               | No       | `"#000000"` |
-| `pixelSpacing` (Android only) | How many pixels to skip when iterating over image pixels. Higher means better performance (**note**: value cannot be lower than 1).                         | `number`                                               | No       | `5`         |
-| `quality` (iOS only)          | Highest implies no downscaling and very good colors, but it is very slow. See [UIImageColors](https://github.com/jathu/UIImageColors#uiimagecolors-objects) | `'lowest'` <br> `'low'` <br> `'high'` <br> `'highest'` | No       | `"low"`     |
+| Property                      | Description                                                                                                                                                                                    | Type                                                   | Required | Default     |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | -------- | ----------- |
+| `fallback`                    | If a color property couldn't be retrieved, it will default to this hex color string (**note**: do not use shorthand hex. e.g. `#fff`).                                                         | `string`                                               | No       | `"#000000"` |
+| `cache`                       | Enables in-memory caching of the result.                                                                                                                                                       | `boolean`                                              | No       | `false`     |
+| `key`                         | Unique key to use for the cache entry. The image URI is used as the unique key by default. You should explicitly pass a key if you enable caching and you're using a base64 string as the URI. | `string`                                               | No       | `undefined` |
+| `pixelSpacing` (Android only) | How many pixels to skip when iterating over image pixels. Higher means better performance (**note**: value cannot be lower than 1).                                                            | `number`                                               | No       | `5`         |
+| `quality` (iOS only)          | Highest implies no downscaling and very good colors, but it is very slow. See [UIImageColors](https://github.com/jathu/UIImageColors#uiimagecolors-objects)                                    | `'lowest'` <br> `'low'` <br> `'high'` <br> `'highest'` | No       | `"low"`     |
 
 ### Result (android)
 
@@ -136,13 +138,15 @@ On iOS, you get the following color properties object, plus the respective platf
 ### Example
 
 ```js
-const coolImage = require("./cool.jpg")
+const coolImage = require('./cool.jpg')
 
 const colors = await ImageColors.getColors(coolImage, {
-  fallback: "#228B22",
+  fallback: '#228B22',
+  cache: true,
+  key: 'unique_key',
 })
 
-if (colors.platform === "android") {
+if (colors.platform === 'android') {
   // Access android properties
   // e.g.
   const averageColor = colors.average
