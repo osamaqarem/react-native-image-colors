@@ -1,8 +1,8 @@
 # react-native-image-colors
 
-![Platform](https://img.shields.io/badge/platform-ios%20%7C%20android-green)
-![TypeScript](https://img.shields.io/badge/typescript-typed-blue)
+![Platform](https://img.shields.io/badge/platform-android%20%7C%20ios%20%7C%20expo%20%7C%20web-%239cf)
 [![NPM Badge](https://img.shields.io/npm/v/react-native-image-colors)](https://www.npmjs.com/package/react-native-image-colors)
+[![install size](https://packagephobia.com/badge?p=react-native-image-colors)](https://packagephobia.com/result?p=react-native-image-colors)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-%23ff69b4)
 
 Fetch prominent colors from an image.
