@@ -1,4 +1,7 @@
 {
+  "name": "react-native-image-colors-example",
+  "version": "1.0.0",
+  "private": true,
   "scripts": {
     "start": "react-native start",
     "start:native": "expo start --dev-client",
@@ -26,8 +29,5 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
-  },
-  "private": true,
-  "name": "example_new",
-  "version": "1.0.0"
+  }
 }
