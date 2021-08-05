@@ -162,5 +162,8 @@
         }
       ]
     ]
+  },
+  "dependencies": {
+    "node-vibrant": "3.1.6"
   }
 }

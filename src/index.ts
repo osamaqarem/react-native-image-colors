@@ -1,11 +1,10 @@
-import { NativeModules, Image } from 'react-native'
+import { Image } from 'react-native'
+import { RNImageColors } from './module'
 import { cache } from './cache'
 import type { ImageRequireSource } from 'react-native'
 import type { RNImageColorsModule } from './types'
 
 const MAX_KEY_LEN = 500
-
-const { ImageColors: RNImageColors } = NativeModules
 
 const resolveImageSource = (source: string | ImageRequireSource): string => {
   if (typeof source === 'string') {

@@ -27,22 +27,28 @@ export default function App() {
         cache: true,
       })
 
-      if (result.platform === 'android') {
-        setColors({
-          colorOne: { value: result.average, name: 'average' },
-          colorTwo: { value: result.dominant, name: 'dominant' },
-          colorThree: { value: result.vibrant, name: 'vibrant' },
-          colorFour: { value: result.darkVibrant, name: 'darkVibrant' },
-          rawResult: JSON.stringify(result),
-        })
-      } else {
-        setColors({
-          colorOne: { value: result.background, name: 'background' },
-          colorTwo: { value: result.detail, name: 'detail' },
-          colorThree: { value: result.primary, name: 'primary' },
-          colorFour: { value: result.secondary, name: 'secondary' },
-          rawResult: JSON.stringify(result),
-        })
+      switch (result.platform) {
+        case 'android':
+        case 'web':
+          setColors({
+            colorOne: { value: result.lightVibrant, name: 'average' },
+            colorTwo: { value: result.muted, name: 'dominant' },
+            colorThree: { value: result.vibrant, name: 'vibrant' },
+            colorFour: { value: result.darkVibrant, name: 'darkVibrant' },
+            rawResult: JSON.stringify(result),
+          })
+          break
+        case 'ios':
+          setColors({
+            colorOne: { value: result.background, name: 'background' },
+            colorTwo: { value: result.detail, name: 'detail' },
+            colorThree: { value: result.primary, name: 'primary' },
+            colorFour: { value: result.secondary, name: 'secondary' },
+            rawResult: JSON.stringify(result),
+          })
+          break
+        default:
+          throw new Error('Unexpected platform')
       }
 
       setLoading(false)
