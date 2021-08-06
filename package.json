@@ -135,7 +135,15 @@
           "semi": false
         }
       ]
-    }
+    },
+    "overrides": [
+      {
+          "files": ["*.ts"],
+          "rules": {
+              "no-undef": "off"
+          }
+      }
+  ]
   },
   "eslintIgnore": [
     "node_modules/",
