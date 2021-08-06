@@ -35,7 +35,7 @@ Fetch prominent colors from an image.
   />
 </p>
 
-This module is a wrapper around the [Palette](https://developer.android.com/reference/androidx/palette/graphics/Palette) class on Android and [UIImageColors](https://github.com/jathu/UIImageColors) on iOS.
+This module is a wrapper around the [Palette](https://developer.android.com/reference/androidx/palette/graphics/Palette) class on Android, [UIImageColors](https://github.com/jathu/UIImageColors) on iOS and [node-vibrant](https://github.com/Vibrant-Colors/node-vibrant) for the web.
 
 ## Installation
 
