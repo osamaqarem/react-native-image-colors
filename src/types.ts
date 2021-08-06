@@ -12,6 +12,17 @@ export interface AndroidImageColors {
   platform: 'android'
 }
 
+export interface WebImageColors {
+  dominant?: string
+  vibrant?: string
+  darkVibrant?: string
+  lightVibrant?: string
+  darkMuted?: string
+  lightMuted?: string
+  muted?: string
+  platform: 'web'
+}
+
 export interface IOSImageColors {
   background: string
   primary: string
@@ -29,7 +40,10 @@ export interface Config {
   key?: string
 }
 
-export type ImageColorsResult = AndroidImageColors | IOSImageColors
+export type ImageColorsResult =
+  | AndroidImageColors
+  | IOSImageColors
+  | WebImageColors
 
 declare function GetColors<C extends Config>(
   url: string,
