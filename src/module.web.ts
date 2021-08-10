@@ -2,6 +2,21 @@ import Vibrant from 'node-vibrant'
 import type { Palette } from 'node-vibrant/lib/color'
 import type { Config, WebImageColors } from './types'
 
+const getQuality = (quality: Config['quality']): number => {
+  switch (quality) {
+    case 'lowest':
+      return 10
+    case 'low':
+      return 5
+    case 'high':
+      return 1.333
+    case 'highest':
+      return 1
+    default:
+      return getQuality('low')
+  }
+}
+
 const getDominantSwatch = (palette: Palette) => {
   let dominant = palette[0]
   let highestPopulation = -1
@@ -22,14 +37,16 @@ const getDominantSwatch = (palette: Palette) => {
 
 export const RNImageColors = {
   getColors: async (src: string, config: Config): Promise<WebImageColors> => {
-    // TODO: update docs (mention expo example, web support
     const { fallback } = config
 
     let img = new Image()
     img.src = src
     img.crossOrigin = 'Anonymous'
 
-    const vibrant = new Vibrant(img, {})
+    const vibrant = new Vibrant(img, {
+      useWorker: true,
+      quality: getQuality(config.quality),
+    })
     const palette = await vibrant.getPalette()
 
     return {
