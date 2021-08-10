@@ -40,14 +40,15 @@ This module is a wrapper around the [Palette](https://developer.android.com/refe
 ## Installation
 
 ```
-$ npm install react-native-image-colors
+npm install react-native-image-colors
 ```
 
-or
+```
+yarn add react-native-image-colors
+```
 
-```
-$ yarn add react-native-image-colors
-```
+This package works with Expo managed workflow apps. Set up [`expo-dev-client`](https://docs.expo.dev/clients/getting-started/) so you can use this package.
+The [example](https://github.com/osamaqarem/react-native-image-colors/blob/master/example/package.json) project demonstrates this.
 
 ### Android
 
@@ -57,27 +58,50 @@ Rebuild the app.
 
 Install the pod, then rebuild the app.
 
-`npx pod-install`
+```
+npx pod-install
+```
 
-> **RN < 0.62**: if you face a compilation error while building, your Xcode project likely does not support Swift which this package requires. You can fix this by either **a)** Creating a blank dummy swift file using Xcode or **b)** [Following steps 1,2,3 here](https://github.com/facebook/flipper/blob/4297b3061f14ceca4d184aa3eebd0731b5bf20f5/docs/getting-started.md#for-pure-objective-c-projects).
+> **RN < 0.62**: if you face a compilation error while building, your Xcode project likely does not support Swift which this package requires. You can fix this by creating a blank dummy swift file using Xcode.
 
 ## Usage
 
-Start by importing the module
-
 ```js
 import ImageColors from 'react-native-image-colors'
+
+const uri = require('./cool.jpg')
+
+const result = await ImageColors.getColors(uri, {
+  fallback: '#228B22',
+  cache: true,
+  key: 'unique_key',
+})
+
+switch (result.platform) {
+  case 'android':
+    // android result properties
+    const vibrantColor = result.vibrant
+    break
+  case 'web':
+    // web result properties
+    const lightVibrantColor = result.lightVibrant
+    break
+  case 'ios':
+    // iOS result properties
+    const primaryColor = result.primary
+    break
+  default:
+    throw new Error('Unexpected platform key')
+}
 ```
 
-🎨 Fetch colors
+## API
 
-```js
-const colors = await ImageColors.getColors(URI, config)
-```
+#### `ImageColors.getColors(uri: string, config?: Config): Promise<ImageColorsResult>`
 
-### URI
+#### `uri`
 
-Can be:
+A string which can be:
 
 - URL:
 
@@ -97,7 +121,7 @@ Can be:
 
   > The mime type prefix for base64 is required (e.g. data:image/png;base64).
 
-### config
+#### `Config`
 
 | Property                      | Description                                                                                                                                                                                    | Type                                                   | Required | Default     |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | -------- | ----------- |
@@ -105,25 +129,43 @@ Can be:
 | `cache`                       | Enables in-memory caching of the result.                                                                                                                                                       | `boolean`                                              | No       | `false`     |
 | `key`                         | Unique key to use for the cache entry. The image URI is used as the unique key by default. You should explicitly pass a key if you enable caching and you're using a base64 string as the URI. | `string`                                               | No       | `undefined` |
 | `pixelSpacing` (Android only) | How many pixels to skip when iterating over image pixels. Higher means better performance (**note**: value cannot be lower than 1).                                                            | `number`                                               | No       | `5`         |
-| `quality` (iOS only)          | Highest implies no downscaling and very good colors, but it is very slow. See [UIImageColors](https://github.com/jathu/UIImageColors#uiimagecolors-objects)                                    | `'lowest'` <br> `'low'` <br> `'high'` <br> `'highest'` | No       | `"low"`     |
+| `quality` (iOS and web)          | Highest implies no downscaling and very good colors, but it is very slow.                                    | `'lowest'` <br> `'low'` <br> `'high'` <br> `'highest'` | No       | `"low"`     |
 
-### Result (android)
 
-On android, you will get an object with the following color properties, plus a `platform` key to help you figure out that this is the android result type.
+### `ImageColorsResult`
+
+#### `AndroidImageColors`
+
+On Android, you will get an object with the following color properties, plus a `platform` key to help you figure out that this is the android result type.
 
 | Property       | Type        |
 | -------------- | ----------- |
-| `dominant`     | `string`    |
-| `average`      | `string`    |
-| `vibrant`      | `string`    |
-| `darkVibrant`  | `string`    |
-| `lightVibrant` | `string`    |
-| `darkMuted`    | `string`    |
-| `lightMuted`   | `string`    |
-| `muted`        | `string`    |
+| `dominant`     | `string?`    |
+| `average`      | `string?`    |
+| `vibrant`      | `string?`    |
+| `darkVibrant`  | `string?`    |
+| `lightVibrant` | `string?`    |
+| `darkMuted`    | `string?`    |
+| `lightMuted`   | `string?`    |
+| `muted`        | `string?`    |
 | `platform`     | `"android"` |
 
-### Result (iOS)
+#### `WebImageColors`
+
+On web, the result is similar to Android but lacks the average color.
+
+| Property       | Type        |
+| -------------- | ----------- |
+| `dominant`     | `string?`    |
+| `vibrant`      | `string?`    |
+| `darkVibrant`  | `string?`    |
+| `lightVibrant` | `string?`    |
+| `darkMuted`    | `string?`    |
+| `lightMuted`   | `string?`    |
+| `muted`        | `string?`    |
+| `platform`     | `"web"` |
+
+#### `IOSImageColors`
 
 On iOS, you get the following color properties object, plus the respective platform key.
 
@@ -135,28 +177,9 @@ On iOS, you get the following color properties object, plus the respective platf
 | `detail`     | `string` |
 | `platform`   | `"ios"`  |
 
-### Example
-
-```js
-const coolImage = require('./cool.jpg')
-
-const colors = await ImageColors.getColors(coolImage, {
-  fallback: '#228B22',
-  cache: true,
-  key: 'unique_key',
-})
-
-if (colors.platform === 'android') {
-  // Access android properties
-  // e.g.
-  const averageColor = colors.average
-} else {
-  // Access iOS properties
-  // e.g.
-  const backgroundColor = colors.background
-}
-```
+------
 
 ### Notes
 
-- There is an [example](https://github.com/osamaqarem/react-native-image-colors/blob/master/example/src/App.js) react-native project.
+- There is an [example](https://github.com/osamaqarem/react-native-image-colors/blob/master/example/App.js) react-native project.
+- Since the implementation of each platform is different you can get different color results on each.
