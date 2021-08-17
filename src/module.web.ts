@@ -13,7 +13,7 @@ const getQuality = (quality: Config['quality']): number => {
     case 'highest':
       return 1
     default:
-      return getQuality('low')
+      return getQuality('low') as number
   }
 }
 
