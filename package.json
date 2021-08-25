@@ -135,7 +135,15 @@
           "semi": false
         }
       ]
-    }
+    },
+    "overrides": [
+      {
+          "files": ["*.ts"],
+          "rules": {
+              "no-undef": "off"
+          }
+      }
+  ]
   },
   "eslintIgnore": [
     "node_modules/",
@@ -162,5 +170,8 @@
         }
       ]
     ]
+  },
+  "dependencies": {
+    "node-vibrant": "3.1.6"
   }
 }

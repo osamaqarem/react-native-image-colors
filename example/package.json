@@ -1,22 +1,30 @@
 {
   "name": "react-native-image-colors-example",
-  "description": "Example app for react-native-image-colors",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start"
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --dev-client --web",
+    "eject": "expo eject"
   },
   "dependencies": {
+    "expo": "~42.0.1",
+    "expo-status-bar": "~1.0.4",
     "react": "16.13.1",
-    "react-native": "0.63.4",
-    "react-native-image-colors": "file:.."
+    "react-dom": "16.13.1",
+    "react-native": "~0.63.4",
+    "react-native-image-colors": "file:..",
+    "react-native-web": "~0.13.12",
+    "expo-splash-screen": "~0.11.2",
+    "expo-updates": "~0.8.1",
+    "react-native-gesture-handler": "~1.10.2",
+    "react-native-reanimated": "~2.2.0",
+    "react-native-screens": "~3.4.0",
+    "react-native-unimodules": "~0.14.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/runtime": "^7.12.5",
-    "babel-plugin-module-resolver": "^4.0.0",
-    "metro-react-native-babel-preset": "^0.64.0"
+    "@babel/core": "^7.9.0"
   }
 }
