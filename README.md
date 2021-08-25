@@ -128,7 +128,7 @@ A string which can be:
 | Property                      | Description                                                                                                                                                                                    | Type                                                   | Required | Default     |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | -------- | ----------- |
 | `fallback`                    | If a color property couldn't be retrieved, it will default to this hex color string (**note**: do not use shorthand hex. e.g. `#fff`).                                                         | `string`                                               | No       | `"#000000"` |
-| `cache`                       | Enables in-memory caching of the result.                                                                                                                                                       | `boolean`                                              | No       | `false`     |
+| `cache`                       | Enables in-memory caching of the result - skip downloading the same image next time.                                                                                                           | `boolean`                                              | No       | `false`     |
 | `key`                         | Unique key to use for the cache entry. The image URI is used as the unique key by default. You should explicitly pass a key if you enable caching and you're using a base64 string as the URI. | `string`                                               | No       | `undefined` |
 | `pixelSpacing` (Android only) | How many pixels to skip when iterating over image pixels. Higher means better performance (**note**: value cannot be lower than 1).                                                            | `number`                                               | No       | `5`         |
 | `quality` (iOS and web)       | Highest implies no downscaling and very good colors.                                                                                                                                           | `'lowest'` <br> `'low'` <br> `'high'` <br> `'highest'` | No       | `"low"`     |
@@ -179,4 +179,4 @@ Every result object contains a respective `platform` key to help narrow down the
 ### Notes
 
 - There is an [example](https://github.com/osamaqarem/react-native-image-colors/blob/master/example/App.js) react-native project.
-- Since the implementation of each platform is different you can get different color results on each.
+- Since the implementation of each platform is different you can get different color results for each.
