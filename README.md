@@ -47,9 +47,6 @@ npm install react-native-image-colors
 yarn add react-native-image-colors
 ```
 
-This package works with Expo managed workflow apps. Set up [`expo-dev-client`](https://docs.expo.dev/clients/getting-started/) so you can use this package.
-The [example](https://github.com/osamaqarem/react-native-image-colors/blob/master/example/package.json) project demonstrates this.
-
 ### Android
 
 Rebuild the app.
@@ -63,6 +60,11 @@ npx pod-install
 ```
 
 > **RN < 0.62**: if you face a compilation error while building, your Xcode project likely does not support Swift which this package requires. You can fix this by creating a blank dummy swift file using Xcode.
+
+### Expo
+
+This package works with Expo managed workflow apps. Set up [`expo-dev-client`](https://docs.expo.dev/clients/getting-started/) so you can use this package.
+The [example](https://github.com/osamaqarem/react-native-image-colors/blob/master/example/package.json) project demonstrates this.
 
 ## Usage
 
@@ -129,45 +131,40 @@ A string which can be:
 | `cache`                       | Enables in-memory caching of the result.                                                                                                                                                       | `boolean`                                              | No       | `false`     |
 | `key`                         | Unique key to use for the cache entry. The image URI is used as the unique key by default. You should explicitly pass a key if you enable caching and you're using a base64 string as the URI. | `string`                                               | No       | `undefined` |
 | `pixelSpacing` (Android only) | How many pixels to skip when iterating over image pixels. Higher means better performance (**note**: value cannot be lower than 1).                                                            | `number`                                               | No       | `5`         |
-| `quality` (iOS and web)          | Highest implies no downscaling and very good colors, but it is very slow.                                    | `'lowest'` <br> `'low'` <br> `'high'` <br> `'highest'` | No       | `"low"`     |
-
+| `quality` (iOS and web)       | Highest implies no downscaling and very good colors.                                                                                                                                           | `'lowest'` <br> `'low'` <br> `'high'` <br> `'highest'` | No       | `"low"`     |
 
 ### `ImageColorsResult`
 
-#### `AndroidImageColors`
+Every result object contains a respective `platform` key to help narrow down the type.
 
-On Android, you will get an object with the following color properties, plus a `platform` key to help you figure out that this is the android result type.
+#### `AndroidImageColors`
 
 | Property       | Type        |
 | -------------- | ----------- |
-| `dominant`     | `string?`    |
-| `average`      | `string?`    |
-| `vibrant`      | `string?`    |
-| `darkVibrant`  | `string?`    |
-| `lightVibrant` | `string?`    |
-| `darkMuted`    | `string?`    |
-| `lightMuted`   | `string?`    |
-| `muted`        | `string?`    |
+| `dominant`     | `string?`   |
+| `average`      | `string?`   |
+| `vibrant`      | `string?`   |
+| `darkVibrant`  | `string?`   |
+| `lightVibrant` | `string?`   |
+| `darkMuted`    | `string?`   |
+| `lightMuted`   | `string?`   |
+| `muted`        | `string?`   |
 | `platform`     | `"android"` |
 
 #### `WebImageColors`
 
-On web, the result is similar to Android but lacks the average color.
-
-| Property       | Type        |
-| -------------- | ----------- |
-| `dominant`     | `string?`    |
-| `vibrant`      | `string?`    |
-| `darkVibrant`  | `string?`    |
-| `lightVibrant` | `string?`    |
-| `darkMuted`    | `string?`    |
-| `lightMuted`   | `string?`    |
-| `muted`        | `string?`    |
-| `platform`     | `"web"` |
+| Property       | Type      |
+| -------------- | --------- |
+| `dominant`     | `string?` |
+| `vibrant`      | `string?` |
+| `darkVibrant`  | `string?` |
+| `lightVibrant` | `string?` |
+| `darkMuted`    | `string?` |
+| `lightMuted`   | `string?` |
+| `muted`        | `string?` |
+| `platform`     | `"web"`   |
 
 #### `IOSImageColors`
-
-On iOS, you get the following color properties object, plus the respective platform key.
 
 | Property     | Type     |
 | ------------ | -------- |
@@ -177,7 +174,7 @@ On iOS, you get the following color properties object, plus the respective platf
 | `detail`     | `string` |
 | `platform`   | `"ios"`  |
 
-------
+---
 
 ### Notes
 
