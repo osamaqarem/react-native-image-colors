@@ -1,6 +1,6 @@
 {
   "name": "react-native-image-colors",
-  "version": "1.3.1",
+  "version": "1.4.0-beta.0",
   "description": "Fetch prominent colors from an image.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -138,12 +138,14 @@
     },
     "overrides": [
       {
-          "files": ["*.ts"],
-          "rules": {
-              "no-undef": "off"
-          }
+        "files": [
+          "*.ts"
+        ],
+        "rules": {
+          "no-undef": "off"
+        }
       }
-  ]
+    ]
   },
   "eslintIgnore": [
     "node_modules/",
