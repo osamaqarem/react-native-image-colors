@@ -1,5 +1,12 @@
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  SafeAreaView,
+} from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Image, SafeAreaView } from 'react-native'
 import ImageColors from 'react-native-image-colors'
 
 const yunaUrl = 'https://i.imgur.com/68jyjZT.jpg'
@@ -31,8 +38,8 @@ export default function App() {
         case 'android':
         case 'web':
           setColors({
-            colorOne: { value: result.lightVibrant, name: 'average' },
-            colorTwo: { value: result.muted, name: 'dominant' },
+            colorOne: { value: result.lightVibrant, name: 'lightVibrant' },
+            colorTwo: { value: result.dominant, name: 'dominant' },
             colorThree: { value: result.vibrant, name: 'vibrant' },
             colorFour: { value: result.darkVibrant, name: 'darkVibrant' },
             rawResult: JSON.stringify(result),
@@ -122,10 +129,16 @@ const styles = StyleSheet.create({
   row: {
     flex: 1,
     flexDirection: 'row',
+    width: '100%',
   },
   resultContainer: {
     flex: 1,
     padding: 20,
+    width: Platform.select({
+      web: 'fill-available',
+      ios: '100%',
+      android: '100%',
+    }),
   },
   container: {
     flex: 1,
