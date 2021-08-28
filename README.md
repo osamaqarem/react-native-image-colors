@@ -66,6 +66,10 @@ npx pod-install
 This package works with Expo managed workflow apps. Set up [`expo-dev-client`](https://docs.expo.dev/clients/getting-started/) so you can use this package.
 The [example](https://github.com/osamaqarem/react-native-image-colors/blob/master/example/package.json) project demonstrates this.
 
+### Web
+
+You're good to go!
+
 ## Usage
 
 ```js
