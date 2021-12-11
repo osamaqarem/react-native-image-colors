@@ -27,20 +27,20 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class ImageColorsModule extends ReactContextBaseJavaModule {
-  private static final String base64Scheme = "data";
-  private final ExecutorService executorService;
-  private Integer pixelSpacing;
+    private static final String base64Scheme = "data";
+    private final ExecutorService executorService;
+    private Integer pixelSpacing;
 
 
     ImageColorsModule(ReactApplicationContext reactContext) {
-      super(reactContext);
-      executorService = new ThreadPoolExecutor(
-        0,
-        Integer.MAX_VALUE,
-        30L,
-        TimeUnit.SECONDS,
-        new SynchronousQueue<>()
-      );
+        super(reactContext);
+        executorService = new ThreadPoolExecutor(
+            0,
+            Integer.MAX_VALUE,
+            30L,
+            TimeUnit.SECONDS,
+            new SynchronousQueue<>()
+        );
     }
 
     @NonNull
@@ -70,7 +70,7 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
 
         int spacing = 5;
 
-        if(pixelSpacing != null){
+        if (pixelSpacing != null) {
             spacing = pixelSpacing;
         }
 
@@ -94,114 +94,111 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getColors(String source, ReadableMap config, Promise promise) {
-      executorService.execute(() -> {
-          try {
-              String defColor = "#000000";
-              pixelSpacing = null;
+        executorService.execute(() -> {
+            try {
+                String defColor = "#000000";
+                pixelSpacing = null;
 
-              if (config != null){
-                  if (config.hasKey("defaultColor")) {
-                      defColor = config.getString("defaultColor");
-                  }
-                  if (config.hasKey("pixelSpacing")) {
-                      pixelSpacing = config.getInt("pixelSpacing");
-                  }
-              }
+                if (config != null) {
+                    if (config.hasKey("defaultColor")) {
+                        defColor = config.getString("defaultColor");
+                    }
+                    if (config.hasKey("pixelSpacing")) {
+                        pixelSpacing = config.getInt("pixelSpacing");
+                    }
+                }
 
-              int defColorInt = parseColorFromHex(defColor);
+                int defColorInt = parseColorFromHex(defColor);
 
-              WritableMap resultMap = Arguments.createMap();
-              resultMap.putString("platform", "android");
+                WritableMap resultMap = Arguments.createMap();
+                resultMap.putString("platform", "android");
 
 
-              Context context = getReactApplicationContext();
-              int resourceId = context.getResources().getIdentifier(source, "drawable", context.getPackageName());
-              Bitmap image = null;
+                Context context = getReactApplicationContext();
+                int resourceId = context.getResources().getIdentifier(source, "drawable", context.getPackageName());
+                Bitmap image = null;
 
-              if (resourceId == 0) {
-                  // resource is not a local file
-                  // could be a URL, base64.
-                  URI uri = new URI(source);
-                  String scheme = uri.getScheme();
+                if (resourceId == 0) {
+                    // resource is not a local file
+                    // could be a URL, base64.
+                    if (source.startsWith(base64Scheme)) {
+                        String[] parts = source.split(",");
+                        String base64Uri = parts[1];
+                        byte[] decodedString = Base64.decode(base64Uri, Base64.DEFAULT);
+                        image = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    } else {
+                        URI uri = new URI(source);
+                        URLConnection urlConnection = uri.toURL().openConnection();
 
-                  if(scheme == null) throw new Exception("Invalid URI scheme");
+                        ReadableMap headers = config != null ? config.getMap("headers") : null;
+                        if (headers != null) {
+                            ReadableMapKeySetIterator iterator = headers.keySetIterator();
+                            while (iterator.hasNextKey()) {
+                                String key = iterator.nextKey();
+                                urlConnection.setRequestProperty(key, headers.getString(key));
+                            }
+                        }
 
-                  if (scheme.equals(base64Scheme)) {
-                      String[] parts = source.split(",");
-                      String base64Uri = parts[1];
-                      byte[] decodedString = Base64.decode(base64Uri, Base64.DEFAULT);
-                      image = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                  } else {
-                      URLConnection urlConnection = uri.toURL().openConnection();
+                        // download image
+                        image = BitmapFactory.decodeStream(urlConnection.getInputStream());
+                    }
+                } else {
+                    image = BitmapFactory.decodeResource(context.getResources(), resourceId);
+                }
 
-                      ReadableMap headers = config != null ? config.getMap("headers") : null;
-                      if(headers != null){
-                          ReadableMapKeySetIterator iterator = headers.keySetIterator();
-                          while(iterator.hasNextKey()){
-                              String key = iterator.nextKey();
-                              urlConnection.setRequestProperty(key, headers.getString(key));
-                          }
-                      }
+                if (image == null) throw new Exception("Invalid image URI – failed to get image");
 
-                      image = BitmapFactory.decodeStream(urlConnection.getInputStream());
-                  }
-              } else {
-                  image = BitmapFactory.decodeResource(context.getResources(), resourceId);
-              }
+                int rgbAvg = calculateAverageColor(image);
+                String hexAvg = getHex(rgbAvg);
+                resultMap.putString("average", hexAvg);
 
-              if (image == null) throw new Exception("Invalid image URI – failed to get image");
+                Palette.Builder builder = new Palette.Builder(image);
+                builder.generate(palette -> {
+                    try {
+                        if (palette != null) {
+                            int rgb = palette.getDominantColor(defColorInt);
+                            String hex = getHex(rgb);
+                            resultMap.putString("dominant", hex);
 
-              int rgbAvg = calculateAverageColor(image);
-              String hexAvg = getHex(rgbAvg);
-              resultMap.putString("average", hexAvg);
+                            int rgb1 = palette.getVibrantColor(defColorInt);
+                            String hex1 = getHex(rgb1);
+                            resultMap.putString("vibrant", hex1);
 
-                  Palette.Builder builder = new Palette.Builder(image);
-                  builder.generate(palette -> {
-                      try {
-                          if (palette != null) {
-                                  int rgb = palette.getDominantColor(defColorInt);
-                                  String hex = getHex(rgb);
-                                  resultMap.putString("dominant", hex);
+                            int rgb2 = palette.getDarkVibrantColor(defColorInt);
+                            String hex2 = getHex(rgb2);
+                            resultMap.putString("darkVibrant", hex2);
 
-                                  int rgb1 = palette.getVibrantColor(defColorInt);
-                                  String hex1 = getHex(rgb1);
-                                  resultMap.putString("vibrant", hex1);
+                            int rgb3 = palette.getLightVibrantColor(defColorInt);
+                            String hex3 = getHex(rgb3);
+                            resultMap.putString("lightVibrant", hex3);
 
-                                  int rgb2 = palette.getDarkVibrantColor(defColorInt);
-                                  String hex2 = getHex(rgb2);
-                                  resultMap.putString("darkVibrant", hex2);
+                            int rgb4 = palette.getDarkMutedColor(defColorInt);
+                            String hex4 = getHex(rgb4);
+                            resultMap.putString("darkMuted", hex4);
 
-                                  int rgb3 = palette.getLightVibrantColor(defColorInt);
-                                  String hex3 = getHex(rgb3);
-                                  resultMap.putString("lightVibrant", hex3);
+                            int rgb5 = palette.getLightMutedColor(defColorInt);
+                            String hex5 = getHex(rgb5);
+                            resultMap.putString("lightMuted", hex5);
 
-                                  int rgb4 = palette.getDarkMutedColor(defColorInt);
-                                  String hex4 = getHex(rgb4);
-                                  resultMap.putString("darkMuted", hex4);
+                            int rgb6 = palette.getMutedColor(defColorInt);
+                            String hex6 = getHex(rgb6);
+                            resultMap.putString("muted", hex6);
 
-                                  int rgb5 = palette.getLightMutedColor(defColorInt);
-                                  String hex5 = getHex(rgb5);
-                                  resultMap.putString("lightMuted", hex5);
+                            promise.resolve(resultMap);
+                        } else {
+                            throw new Exception("Palette was null");
+                        }
+                    } catch (Exception e) {
+                        handleException(e, promise);
+                    }
+                });
 
-                                  int rgb6 = palette.getMutedColor(defColorInt);
-                                  String hex6 = getHex(rgb6);
-                                  resultMap.putString("muted", hex6);
-
-                                  promise.resolve(resultMap);
-                          } else {
-                              throw new Exception("Palette was null");
-                          }
-                      } catch (Exception e) {
-                          handleException(e, promise);
-                      }
-                  });
-
-          } catch (MalformedURLException e) {
-              handleException(new Exception("Invalid URL"), promise);
-          } catch (Exception e) {
-              handleException(e, promise);
-          }
-      });
+            } catch (MalformedURLException e) {
+                handleException(new Exception("Invalid URL"), promise);
+            } catch (Exception e) {
+                handleException(e, promise);
+            }
+        });
     }
 
 
