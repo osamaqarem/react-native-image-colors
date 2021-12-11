@@ -15,10 +15,12 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.WritableMap;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URLConnection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -130,7 +132,18 @@ public class ImageColorsModule extends ReactContextBaseJavaModule {
                       byte[] decodedString = Base64.decode(base64Uri, Base64.DEFAULT);
                       image = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                   } else {
-                      image = BitmapFactory.decodeStream(uri.toURL().openConnection().getInputStream());
+                      URLConnection urlConnection = uri.toURL().openConnection();
+
+                      ReadableMap headers = config != null ? config.getMap("headers") : null;
+                      if(headers != null){
+                          ReadableMapKeySetIterator iterator = headers.keySetIterator();
+                          while(iterator.hasNextKey()){
+                              String key = iterator.nextKey();
+                              urlConnection.setRequestProperty(key, headers.getString(key));
+                          }
+                      }
+
+                      image = BitmapFactory.decodeStream(urlConnection.getInputStream());
                   }
               } else {
                   image = BitmapFactory.decodeResource(context.getResources(), resourceId);

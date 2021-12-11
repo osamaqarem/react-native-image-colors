@@ -32,6 +32,9 @@ export default function App() {
         quality: 'low',
         pixelSpacing: 5,
         cache: true,
+        headers: {
+          authorization: 'Basic 123',
+        },
       })
 
       switch (result.platform) {

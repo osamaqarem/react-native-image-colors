@@ -286,7 +286,7 @@ PODS:
     - React-jsi (= 0.63.4)
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNImageColors (1.3.1):
+  - RNImageColors (1.4.0):
     - React-Core
   - RNReanimated (2.2.0):
     - DoubleConversion
@@ -332,18 +332,18 @@ PODS:
 
 DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
-  - EXApplication (from `../node_modules/expo-application/ios`)
-  - EXConstants (from `../node_modules/expo-constants/ios`)
-  - EXErrorRecovery (from `../node_modules/expo-error-recovery/ios`)
-  - EXFileSystem (from `../node_modules/expo-file-system/ios`)
-  - EXFont (from `../node_modules/expo-font/ios`)
-  - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
-  - EXKeepAwake (from `../node_modules/expo-keep-awake/ios`)
-  - ExpoModulesCore (from `../node_modules/expo-modules-core/ios`)
-  - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
-  - EXStructuredHeaders (from `../node_modules/expo-structured-headers/ios`)
-  - EXUpdates (from `../node_modules/expo-updates/ios`)
-  - EXUpdatesInterface (from `../node_modules/expo-updates-interface/ios`)
+  - EXApplication (from `../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-application/ios`)
+  - EXConstants (from `../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-constants/ios`)
+  - EXErrorRecovery (from `../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-error-recovery/ios`)
+  - EXFileSystem (from `../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-file-system/ios`)
+  - EXFont (from `../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-font/ios`)
+  - EXImageLoader (from `../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-image-loader/ios`)
+  - EXKeepAwake (from `../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-keep-awake/ios`)
+  - ExpoModulesCore (from `../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-modules-core/ios`)
+  - EXSplashScreen (from `../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-splash-screen/ios`)
+  - EXStructuredHeaders (from `../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-structured-headers/ios`)
+  - EXUpdates (from `../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-updates/ios`)
+  - EXUpdatesInterface (from `../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-updates-interface/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
@@ -375,8 +375,8 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
-  - "UMCore (from `../node_modules/@unimodules/core/ios`)"
-  - "UMReactNativeAdapter (from `../node_modules/@unimodules/react-native-adapter/ios`)"
+  - "UMCore (from `../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/@unimodules/core/ios`)"
+  - "UMReactNativeAdapter (from `../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/@unimodules/react-native-adapter/ios`)"
   - UMTaskManagerInterface (from `../node_modules/unimodules-task-manager-interface/ios`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -388,29 +388,29 @@ EXTERNAL SOURCES:
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXApplication:
-    :path: "../node_modules/expo-application/ios"
+    :path: "../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-application/ios"
   EXConstants:
-    :path: "../node_modules/expo-constants/ios"
+    :path: "../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-constants/ios"
   EXErrorRecovery:
-    :path: "../node_modules/expo-error-recovery/ios"
+    :path: "../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-error-recovery/ios"
   EXFileSystem:
-    :path: "../node_modules/expo-file-system/ios"
+    :path: "../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-file-system/ios"
   EXFont:
-    :path: "../node_modules/expo-font/ios"
+    :path: "../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-font/ios"
   EXImageLoader:
-    :path: "../node_modules/expo-image-loader/ios"
+    :path: "../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-image-loader/ios"
   EXKeepAwake:
-    :path: "../node_modules/expo-keep-awake/ios"
+    :path: "../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-keep-awake/ios"
   ExpoModulesCore:
-    :path: "../node_modules/expo-modules-core/ios"
+    :path: "../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-modules-core/ios"
   EXSplashScreen:
-    :path: "../node_modules/expo-splash-screen/ios"
+    :path: "../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-splash-screen/ios"
   EXStructuredHeaders:
-    :path: "../node_modules/expo-structured-headers/ios"
+    :path: "../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-structured-headers/ios"
   EXUpdates:
-    :path: "../node_modules/expo-updates/ios"
+    :path: "../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-updates/ios"
   EXUpdatesInterface:
-    :path: "../node_modules/expo-updates-interface/ios"
+    :path: "../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/expo-updates-interface/ios"
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   FBReactNativeSpec:
@@ -470,9 +470,9 @@ EXTERNAL SOURCES:
   UMAppLoader:
     :path: "../node_modules/unimodules-app-loader/ios"
   UMCore:
-    :path: "../node_modules/@unimodules/core/ios"
+    :path: "../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/@unimodules/core/ios"
   UMReactNativeAdapter:
-    :path: "../node_modules/@unimodules/react-native-adapter/ios"
+    :path: "../node_modules/react-native-image-colors/example/node_modules/react-native-image-colors/example/node_modules/@unimodules/react-native-adapter/ios"
   UMTaskManagerInterface:
     :path: "../node_modules/unimodules-task-manager-interface/ios"
   Yoga:
@@ -518,7 +518,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNImageColors: 5bb550d397934b18a55b8beec2af683bb9432898
+  RNImageColors: f6b4dc737d15bf01bf379369655467e03b361861
   RNReanimated: d9da990fc90123f4ffbfdda93d00fc15174863a8
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
   UMAppLoader: 21af63390e55c82e037fb9752d93114a80ecf16e
@@ -529,4 +529,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 7fa763119125bb6249b763889c740ece3feea017
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2
