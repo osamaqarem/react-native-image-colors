@@ -59,12 +59,21 @@ Install the pod, then rebuild the app.
 npx pod-install
 ```
 
-> **RN < 0.62**: if you face a compilation error while building, your Xcode project likely does not support Swift which this package requires. You can fix this by creating a blank dummy swift file using Xcode.
-
 ### Expo
 
-This package works with Expo managed workflow apps. Set up [`expo-dev-client`](https://docs.expo.dev/clients/getting-started/) so you can use this package.
-The [example](https://github.com/osamaqarem/react-native-image-colors/blob/master/example/package.json) project demonstrates this.
+Build custom native code
+
+```
+expo prebuild
+
+# iOS
+expo run:ios
+
+# Android
+expo run:android
+```
+
+> The [example](https://github.com/osamaqarem/react-native-image-colors/blob/master/example/package.json) is an expo app.
 
 ### Web
 
@@ -129,14 +138,14 @@ A string which can be:
 
 #### `Config`
 
-| Property                      | Description                                                                                                                                                                                    | Type                                                   | Required | Default     |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | -------- | ----------- |
-| `fallback`                    | If a color property couldn't be retrieved, it will default to this hex color string (**note**: do not use shorthand hex. e.g. `#fff`).                                                         | `string`                                               | No       | `"#000000"` |
-| `cache`                       | Enables in-memory caching of the result - skip downloading the same image next time.                                                                                                           | `boolean`                                              | No       | `false`     |
-| `key`                         | Unique key to use for the cache entry. The image URI is used as the unique key by default. You should explicitly pass a key if you enable caching and you're using a base64 string as the URI. | `string`                                               | No       | `undefined` |
-| `headers`                     | HTTP headers to be sent along with the GET request to download the image                                                                                                                       | `Record<string, string>`                               | No       | `undefined` |
-| `pixelSpacing` (Android only) | How many pixels to skip when iterating over image pixels. Higher means better performance (**note**: value cannot be lower than 1).                                                            | `number`                                               | No       | `5`         |
-| `quality` (iOS and web)       | Highest implies no downscaling and very good colors.                                                                                                                                           | `'lowest'` <br> `'low'` <br> `'high'` <br> `'highest'` | No       | `"low"`     |
+| Property       | Description                                                                                                                                                                                    | Type                                                   | Required | Default     | Supported platforms |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | -------- | ----------- | ------------------- |
+| `fallback`     | If a color property couldn't be retrieved, it will default to this hex color string (**note**: do not use shorthand hex. e.g. `#fff`).                                                         | `string`                                               | No       | `"#000000"` | All                 |
+| `cache`        | Enables in-memory caching of the result - skip downloading the same image next time.                                                                                                           | `boolean`                                              | No       | `false`     | All                 |
+| `key`          | Unique key to use for the cache entry. The image URI is used as the unique key by default. You should explicitly pass a key if you enable caching and you're using a base64 string as the URI. | `string`                                               | No       | `undefined` | All                 |
+| `headers`      | HTTP headers to be sent along with the GET request to download the image                                                                                                                       | `Record<string, string>`                               | No       | `undefined` | iOS, Android        |
+| `pixelSpacing` | How many pixels to skip when iterating over image pixels. Higher means better performance (**note**: value cannot be lower than 1).                                                            | `number`                                               | No       | `5`         | Android             |
+| `quality`      | Highest implies no downscaling and very good colors.                                                                                                                                           | `'lowest'` <br> `'low'` <br> `'high'` <br> `'highest'` | No       | `"low"`     | iOS, Web            |
 
 ### `ImageColorsResult`
 
@@ -183,5 +192,5 @@ Every result object contains a respective `platform` key to help narrow down the
 
 ### Notes
 
-- There is an [example](https://github.com/osamaqarem/react-native-image-colors/blob/master/example/App.js) react-native project.
+- There is an [example](https://github.com/osamaqarem/react-native-image-colors/blob/master/example/App.js) app.
 - Since the implementation of each platform is different you can get different color results for each.
