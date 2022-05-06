@@ -1,10 +1,11 @@
 {
   "expo": {
-    "name": "react-native-image-colors-example",
-    "slug": "react-native-image-colors-example",
+    "name": "example",
+    "slug": "example",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -18,14 +19,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.osamaqarem.imagecolorsexample"
+      "bundleIdentifier": "com.imagecolors.example"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.osamaqarem.imagecolorsexample"
+      "package": "com.imagecolors.example"
     },
     "web": {
       "favicon": "./assets/favicon.png"
