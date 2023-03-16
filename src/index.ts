@@ -1,51 +1,26 @@
-import { Image } from 'react-native'
-import { RNImageColors } from './module'
-import { cache } from './cache'
-import type { ImageRequireSource } from 'react-native'
-import type { ImageColorsResult, RNImageColorsModule } from './types'
+import { NativeModulesProxy, EventEmitter, Subscription } from 'expo-modules-core';
 
-const MAX_KEY_LEN = 500
+// Import the native module. On web, it will be resolved to RNImageColors.web.ts
+// and on native platforms to RNImageColors.ts
+import RNImageColorsModule from './RNImageColorsModule';
+import RNImageColorsView from './RNImageColorsView';
+import { ChangeEventPayload, RNImageColorsViewProps } from './RNImageColors.types';
 
-const resolveImageSource = (source: string | ImageRequireSource): string => {
-  if (typeof source === 'string') {
-    return source
-  } else {
-    return Image.resolveAssetSource(source).uri
-  }
+// Get the native constant value.
+export const PI = RNImageColorsModule.PI;
+
+export function hello(): string {
+  return RNImageColorsModule.hello();
 }
 
-const getColors: RNImageColorsModule['getColors'] = async (source, config) => {
-  const resolvedSrc = resolveImageSource(source)
-
-  if (config?.cache) {
-    const cachedResult = config.key
-      ? cache.getItem(config.key)
-      : cache.getItem(resolvedSrc)
-
-    if (cachedResult) return cachedResult
-  }
-
-  const result: ImageColorsResult = await RNImageColors.getColors(
-    resolvedSrc,
-    config
-  )
-
-  if (config?.cache) {
-    if (!config.key && resolvedSrc.length > MAX_KEY_LEN) {
-      throw new Error(
-        `You enabled caching, but you didn't pass a key. We fallback to using the image URI as the key. However the URI is longer than ${MAX_KEY_LEN}. Please pass a short unique key.`
-      )
-    }
-
-    cache.setItem(config.key ?? resolvedSrc, result)
-  }
-
-  return result
+export async function setValueAsync(value: string) {
+  return await RNImageColorsModule.setValueAsync(value);
 }
 
-const ImageColors: RNImageColorsModule = {
-  getColors,
-  cache,
+const emitter = new EventEmitter(RNImageColorsModule ?? NativeModulesProxy.RNImageColors);
+
+export function addChangeListener(listener: (event: ChangeEventPayload) => void): Subscription {
+  return emitter.addListener<ChangeEventPayload>('onChange', listener);
 }
 
-export default ImageColors
+export { RNImageColorsView, RNImageColorsViewProps, ChangeEventPayload };

@@ -1,0 +1,9 @@
+{
+  "platforms": ["ios", "android", "web"],
+  "ios": {
+    "modules": ["RNImageColorsModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.imagecolors.RNImageColorsModule"]
+  }
+}

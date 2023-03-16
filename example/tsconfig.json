@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "react-native-image-colors": ["../src/index"],
+      "react-native-image-colors/*": ["../src/*"]
+    }
+  }
+}
