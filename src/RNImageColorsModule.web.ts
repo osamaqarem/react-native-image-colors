@@ -36,7 +36,7 @@ const getDominantSwatch = (palette: Palette) => {
   return dominant;
 };
 
-export const RNImageColors = {
+export default {
   getColors: async (src: string, config: Config): Promise<WebImageColors> => {
     const { defaultColor } = config;
 
