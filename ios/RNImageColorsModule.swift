@@ -1,44 +1,139 @@
 import ExpoModulesCore
+import UIKit
 
 public class RNImageColorsModule: Module {
-  // Each module class must implement the definition function. The definition consists of components
-  // that describes the module's functionality and behavior.
-  // See https://docs.expo.dev/modules/module-api for more details about available components.
-  public func definition() -> ModuleDefinition {
-    // Sets the name of the module that JavaScript code will use to refer to the module. Takes a string as an argument.
-    // Can be inferred from module's class name, but it's recommended to set it explicitly for clarity.
-    // The module will be accessible from `requireNativeModule('RNImageColors')` in JavaScript.
-    Name("RNImageColors")
 
-    // Sets constant properties on the module. Can take a dictionary or a closure that returns a dictionary.
-    Constants([
-      "PI": Double.pi
-    ])
-
-    // Defines event names that the module can send to JavaScript.
-    Events("onChange")
-
-    // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
-    Function("hello") {
-      return "Hello world! 👋"
+    enum ERRORS {
+        static let INVALID_URL = "Invalid URL";
+        static let DOWNLOAD_ERR = "Could not download image.";
+        static let PARSE_ERR = "Could not parse image.";
+    }
+    
+    enum QUALITY {
+        static let LOWEST = "lowest";
+        static let LOW = "low";
+        static let HIGH = "high";
+        static let HIGHEST = "highest";
+    }
+    
+    private func getQuality(qualityOption: String) -> UIImageColorsQuality {
+        switch qualityOption {
+        case QUALITY.LOWEST:
+            return UIImageColorsQuality.lowest
+        case QUALITY.LOW:
+            return UIImageColorsQuality.low
+        case QUALITY.HIGH:
+            return UIImageColorsQuality.high
+        case QUALITY.HIGHEST:
+            return UIImageColorsQuality.highest
+        default:
+            return UIImageColorsQuality.low
+        }
+    }
+    
+    
+    private func toHexString(color: UIColor) -> String {
+        let comp = color.cgColor.components;
+        
+        let r: CGFloat = comp![0]
+        let g: CGFloat = comp![1]
+        let b: CGFloat = comp![2]
+        
+        let rgb: Int = (Int)(r * 255) << 16 | (Int)(g * 255) << 8 | (Int)(b * 255) << 0
+        
+        return String(format: "#%06X", rgb)
     }
 
-    // Defines a JavaScript function that always returns a Promise and whose native code
-    // is by default dispatched on the different thread than the JavaScript runtime runs on.
-    AsyncFunction("setValueAsync") { (value: String) in
-      // Send an event to JavaScript.
-      self.sendEvent("onChange", [
-        "value": value
-      ])
-    }
+    struct Config: Record {
+        @Field
+        var defaultColor: String = "#000000"
 
-    // Enables the module to be used as a native view. Definition components that are accepted as part of the
-    // view definition: Prop, Events.
-    View(RNImageColorsView.self) {
-      // Defines a setter for the `name` prop.
-      Prop("name") { (view: RNImageColorsView, prop: String) in
-        print(prop)
-      }
+        @Field
+        var headers: NSDictionary? = nil
+
+        @Field
+        var quality: String = QUALITY.LOW
     }
-  }
+    
+    public func definition() -> ModuleDefinition {
+        Name("RNImageColors")
+        
+        AsyncFunction("getColors") { (uri: String, config: Config, promise: Promise) in
+            let defaultColor = config.defaultColor
+            
+            guard let parsedUri = URL(string: uri) else {
+                let error = NSError.init(domain: RNImageColorsModule.ERRORS.INVALID_URL, code: -1)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                    promise.reject(error)
+                }
+                return
+            }
+            
+            var request = URLRequest(url: parsedUri)
+            
+            if let headers = config.headers {
+                let allKeys = headers.allKeys
+                
+                allKeys.forEach { (key) in
+                    let key = key as! String
+                    let value = headers.value(forKey: key) as? String
+                    request.setValue(value, forHTTPHeaderField: key)
+                }
+            }
+            
+            URLSession.shared.dataTask(with: request) { [unowned self] (data, response, error) in
+                guard let data = data, error == nil else {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                        promise.reject(NSError.init(domain: RNImageColorsModule.ERRORS.DOWNLOAD_ERR, code: -2))
+                    }
+                    return
+                }
+                
+                guard let uiImage = UIImage(data: data) else {
+                    let error = NSError.init(domain: RNImageColorsModule.ERRORS.PARSE_ERR, code: -3)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                        promise.reject(error)
+                    }
+                    return
+                }
+                
+                let qualityProp = config.quality
+                let quality = getQuality(qualityOption: qualityProp)
+                
+                uiImage.getColors(quality: quality) { colors in
+                    var resultDict: Dictionary<String, String> = ["platform": "ios"]
+                    
+                    if let background = colors?.background {
+                        resultDict["background"] = self.toHexString(color: background)
+                    } else {
+                        resultDict["background"] = defaultColor
+                    }
+                    
+                    
+                    if let primary = colors?.primary {
+                        resultDict["primary"] = self.toHexString(color: primary)
+                    } else {
+                        resultDict["primary"] = defaultColor
+                    }
+                    
+                    
+                    if let secondary = colors?.secondary {
+                        resultDict["secondary"] = self.toHexString(color: secondary)
+                    } else {
+                        resultDict["secondary"] = defaultColor
+                    }
+                    
+                    if let detail = colors?.detail {
+                        resultDict["detail"] = self.toHexString(color: detail)
+                    } else {
+                        resultDict["detail"] = defaultColor
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                        promise.resolve(resultDict)
+                    }
+                }
+            }.resume()
+        }
+    }
 }
