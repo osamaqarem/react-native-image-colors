@@ -2,8 +2,8 @@
 // and on native platforms to RNImageColors.ts
 import { ImageRequireSource, Image } from 'react-native';
 
-import { ImageColorsResult, Config } from './RNImageColors.types';
-import RNImageColorsModule from './RNImageColorsModule';
+import { ImageColorsResult, Config } from './types';
+import RNImageColorsModule from './module';
 import { cache } from './cache';
 
 const MAX_KEY_LEN = 500;
@@ -12,7 +12,7 @@ const resolveImageSource = (source: string | ImageRequireSource): string => {
   if (typeof source === 'string') {
     return source;
   } else {
-    return Image.resolveAssetSource(source).uri;
+    return Image.resolveAssetSource(source).uri
   }
 };
 

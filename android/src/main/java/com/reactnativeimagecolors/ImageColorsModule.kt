@@ -1,4 +1,4 @@
-package expo.modules.imagecolors
+package com.reactnativeimagecolors
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -31,7 +31,7 @@ class Config : Record {
   val pixelSpacing: Int = 5
 }
 
-class RNImageColorsModule : Module() {
+class ImageColorsModule : Module() {
 
   /**
    * https://gist.github.com/maxjvh/a6ab15cbba9c82a5065d
@@ -72,12 +72,12 @@ class RNImageColorsModule : Module() {
 
   private fun handleError(promise: Promise, err: Exception) {
     GlobalScope.launch(Dispatchers.Main) {
-      promise.reject("[RNImageColors] Error", err.message, err)
+      promise.reject("[ImageColors] Error", err.message, err)
     }
   }
 
   override fun definition() = ModuleDefinition {
-    Name("RNImageColors")
+    Name("ImageColors")
 
     AsyncFunction("getColors") { uri: String, config: Config, promise: Promise ->
       try {

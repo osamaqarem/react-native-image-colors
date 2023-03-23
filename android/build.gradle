@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
 
-group = 'expo.modules.imagecolors'
+group = 'com.reactnativeimagecolors'
 version = '0.1.0'
 
 buildscript {

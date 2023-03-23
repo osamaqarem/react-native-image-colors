@@ -1,4 +1,4 @@
-import type { ImageColorsResult } from './RNImageColors.types'
+import type { ImageColorsResult } from './types'
 
 let storage: Record<string, ImageColorsResult | undefined> = {}
 

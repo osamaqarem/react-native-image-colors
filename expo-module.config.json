@@ -1,9 +1,17 @@
 {
-  "platforms": ["ios", "android", "web"],
+  "platforms": [
+    "ios",
+    "android",
+    "web"
+  ],
   "ios": {
-    "modules": ["RNImageColorsModule"]
+    "modules": [
+      "ImageColorsModule"
+    ]
   },
   "android": {
-    "modules": ["expo.modules.imagecolors.RNImageColorsModule"]
+    "modules": [
+      "com.reactnativeimagecolors.ImageColorsModule"
+    ]
   }
 }

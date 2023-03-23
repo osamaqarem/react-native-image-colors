@@ -1,7 +1,6 @@
 import Vibrant from 'node-vibrant';
-import type { Config, WebImageColors } from './RNImageColors.types';
-
-type Palette = Awaited<ReturnType<Vibrant['getPalette']>>;
+import { Palette } from 'node-vibrant/lib/color';
+import type { Config, WebImageColors } from './types';
 
 const getQuality = (quality: Config['quality']): number => {
   switch (quality) {
