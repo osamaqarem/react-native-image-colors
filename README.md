@@ -140,7 +140,7 @@ A string which can be:
 
 | Property       | Description                                                                                                                                                                                    | Type                                                   | Required | Default     | Supported platforms |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | -------- | ----------- | ------------------- |
-| `fallback`     | If a color property couldn't be retrieved, it will default to this hex color string (**note**: do not use shorthand hex. e.g. `#fff`).                                                         | `string`                                               | No       | `"#000000"` | All                 |
+| `fallbackColor`     | If a color property couldn't be retrieved, it will default to this hex color string (**note**: do not use shorthand hex. e.g. `#fff`).                                                         | `string`                                               | No       | `"#000000"` | All                 |
 | `cache`        | Enables in-memory caching of the result - skip downloading the same image next time.                                                                                                           | `boolean`                                              | No       | `false`     | All                 |
 | `key`          | Unique key to use for the cache entry. The image URI is used as the unique key by default. You should explicitly pass a key if you enable caching and you're using a base64 string as the URI. | `string`                                               | No       | `undefined` | All                 |
 | `headers`      | HTTP headers to be sent along with the GET request to download the image                                                                                                                       | `Record<string, string>`                               | No       | `undefined` | iOS, Android        |
@@ -155,27 +155,27 @@ Every result object contains a respective `platform` key to help narrow down the
 
 | Property       | Type        |
 | -------------- | ----------- |
-| `dominant`     | `string?`   |
-| `average`      | `string?`   |
-| `vibrant`      | `string?`   |
-| `darkVibrant`  | `string?`   |
-| `lightVibrant` | `string?`   |
-| `darkMuted`    | `string?`   |
-| `lightMuted`   | `string?`   |
-| `muted`        | `string?`   |
+| `dominant`     | `string`   |
+| `average`      | `string`   |
+| `vibrant`      | `string`   |
+| `darkVibrant`  | `string`   |
+| `lightVibrant` | `string`   |
+| `darkMuted`    | `string`   |
+| `lightMuted`   | `string`   |
+| `muted`        | `string`   |
 | `platform`     | `"android"` |
 
 #### `WebImageColors`
 
 | Property       | Type      |
 | -------------- | --------- |
-| `dominant`     | `string?` |
-| `vibrant`      | `string?` |
-| `darkVibrant`  | `string?` |
-| `lightVibrant` | `string?` |
-| `darkMuted`    | `string?` |
-| `lightMuted`   | `string?` |
-| `muted`        | `string?` |
+| `dominant`     | `string` |
+| `vibrant`      | `string` |
+| `darkVibrant`  | `string` |
+| `lightVibrant` | `string` |
+| `darkMuted`    | `string` |
+| `lightMuted`   | `string` |
+| `muted`        | `string` |
 | `platform`     | `"web"`   |
 
 #### `IOSImageColors`
@@ -193,4 +193,4 @@ Every result object contains a respective `platform` key to help narrow down the
 ### Notes
 
 - There is an [example](https://github.com/osamaqarem/react-native-image-colors/blob/master/example/App.js) app.
-- Since the implementation of each platform is different you can get different color results for each.
+- Since the implementation of each platform is different you can get **different color results for each**.
