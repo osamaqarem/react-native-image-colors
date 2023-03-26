@@ -47,19 +47,10 @@ npm install react-native-image-colors
 yarn add react-native-image-colors
 ```
 
-### Android
-
-Rebuild the app.
-
-### iOS
-
-Install the pod, then rebuild the app.
-
-```
-npx pod-install
-```
-
 ### Expo
+react-native-image-colors requires Expo SDK 47+
+
+Please ensure that your app has at least iOS 13 as a deployment target, which is required for `react-native-image-colors` as well as Expo SDK 47+
 
 Build custom native code
 
@@ -74,6 +65,18 @@ expo run:android
 ```
 
 > The [example](https://github.com/osamaqarem/react-native-image-colors/blob/master/example/package.json) is an expo app.
+
+### Android
+
+Rebuild the app.
+
+### iOS
+
+Install the pod, then rebuild the app.
+
+```
+npx pod-install
+```
 
 ### Web
 
