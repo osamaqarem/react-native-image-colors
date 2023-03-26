@@ -28,7 +28,7 @@ export default function App() {
   useEffect(() => {
     const fetchColors = async () => {
       const result = await getColors(yunaUrl, {
-        defaultColor: '#000000',
+        fallbackColor: '#000000',
         pixelSpacing: 5,
       });
 

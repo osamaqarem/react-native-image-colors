@@ -22,7 +22,7 @@ import java.net.URI
 
 class Config : Record {
   @Field
-  val defaultColor: String = "#000000"
+  val fallbackColor: String = "#000000"
 
   @Field
   val headers: Map<String, String>? = null
@@ -81,7 +81,7 @@ class ImageColorsModule : Module() {
 
     AsyncFunction("getColors") { uri: String, config: Config, promise: Promise ->
       try {
-        val defaultColorInt = Color.parseColor(config.defaultColor)
+        val fallbackColorInt = Color.parseColor(config.fallbackColor)
         var image: Bitmap? = null
 
         val context = appContext.reactContext
@@ -129,26 +129,26 @@ class ImageColorsModule : Module() {
               throw Exception("Palette was null")
             }
 
-            result["dominant"] = getHex(palette.getDominantColor(defaultColorInt))
-            result["vibrant"] = getHex(palette.getVibrantColor(defaultColorInt))
-            result["darkVibrant"] = getHex(palette.getDarkVibrantColor(defaultColorInt))
-            result["lightVibrant"] = getHex(palette.getLightVibrantColor(defaultColorInt))
-            result["muted"] = getHex(palette.getMutedColor(defaultColorInt))
-            result["darkMuted"] = getHex(palette.getDarkMutedColor(defaultColorInt))
-            result["lightMuted"] = getHex(palette.getLightMutedColor(defaultColorInt))
+            result["dominant"] = getHex(palette.getDominantColor(fallbackColorInt))
+            result["vibrant"] = getHex(palette.getVibrantColor(fallbackColorInt))
+            result["darkVibrant"] = getHex(palette.getDarkVibrantColor(fallbackColorInt))
+            result["lightVibrant"] = getHex(palette.getLightVibrantColor(fallbackColorInt))
+            result["muted"] = getHex(palette.getMutedColor(fallbackColorInt))
+            result["darkMuted"] = getHex(palette.getDarkMutedColor(fallbackColorInt))
+            result["lightMuted"] = getHex(palette.getLightMutedColor(fallbackColorInt))
 
             GlobalScope.launch(Dispatchers.Main) {
               promise.resolve(result)
             }
           }
         } catch (err: Exception) {
-          result["dominant"] = config.defaultColor
-          result["vibrant"] =config.defaultColor
-          result["darkVibrant"] = config.defaultColor
-          result["lightVibrant"] = config.defaultColor
-          result["muted"] = config.defaultColor
-          result["darkMuted"] = config.defaultColor
-          result["lightMuted"] = config.defaultColor
+          result["dominant"] = config.fallbackColor
+          result["vibrant"] =config.fallbackColor
+          result["darkVibrant"] = config.fallbackColor
+          result["lightVibrant"] = config.fallbackColor
+          result["muted"] = config.fallbackColor
+          result["darkMuted"] = config.fallbackColor
+          result["lightMuted"] = config.fallbackColor
 
           GlobalScope.launch(Dispatchers.Main) {
             promise.resolve(result)

@@ -46,7 +46,7 @@ public class ImageColorsModule: Module {
 
     struct Config: Record {
         @Field
-        var defaultColor: String = "#000000"
+        var fallbackColor: String = "#000000"
 
         @Field
         var headers: NSDictionary? = nil
@@ -59,7 +59,7 @@ public class ImageColorsModule: Module {
         Name("ImageColors")
 
         AsyncFunction("getColors") { (uri: String, config: Config, promise: Promise) in
-            let defaultColor = config.defaultColor
+            let fallbackColor = config.fallbackColor
 
             guard let parsedUri = URL(string: uri) else {
                 let error = NSError.init(domain: ImageColorsModule.ERRORS.INVALID_URL, code: -1)
@@ -106,27 +106,27 @@ public class ImageColorsModule: Module {
                     if let background = colors?.background {
                         resultDict["background"] = self.toHexString(color: background)
                     } else {
-                        resultDict["background"] = defaultColor
+                        resultDict["background"] = fallbackColor
                     }
 
 
                     if let primary = colors?.primary {
                         resultDict["primary"] = self.toHexString(color: primary)
                     } else {
-                        resultDict["primary"] = defaultColor
+                        resultDict["primary"] = fallbackColor
                     }
 
 
                     if let secondary = colors?.secondary {
                         resultDict["secondary"] = self.toHexString(color: secondary)
                     } else {
-                        resultDict["secondary"] = defaultColor
+                        resultDict["secondary"] = fallbackColor
                     }
 
                     if let detail = colors?.detail {
                         resultDict["detail"] = self.toHexString(color: detail)
                     } else {
-                        resultDict["detail"] = defaultColor
+                        resultDict["detail"] = fallbackColor
                     }
 
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
