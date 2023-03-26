@@ -11,13 +11,13 @@ export interface AndroidImageColors {
 }
 
 export interface WebImageColors {
-  dominant?: string;
-  vibrant?: string;
-  darkVibrant?: string;
-  lightVibrant?: string;
-  darkMuted?: string;
-  lightMuted?: string;
-  muted?: string;
+  dominant: string;
+  vibrant: string;
+  darkVibrant: string;
+  lightVibrant: string;
+  darkMuted: string;
+  lightMuted: string;
+  muted: string;
   platform: 'web';
 }
 
