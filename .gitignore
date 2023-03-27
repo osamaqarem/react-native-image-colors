@@ -60,3 +60,6 @@ android/keystores/debug.keystore
 lib/
 
 *.tgz
+
+# Jest
+.jest/
