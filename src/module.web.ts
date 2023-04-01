@@ -37,7 +37,7 @@ const getDominantSwatch = (palette: Palette) => {
 
 export default {
   getColors: async (src: string, config: Config): Promise<WebImageColors> => {
-    const { fallbackColor } = config;
+    const { fallback } = config;
 
     const img = new Image();
     img.src = src;
@@ -51,13 +51,13 @@ export default {
     const palette = await vibrant.getPalette();
 
     return {
-      dominant: getDominantSwatch(palette)?.hex ?? fallbackColor,
-      vibrant: palette.Vibrant?.hex ?? fallbackColor,
-      darkVibrant: palette.DarkVibrant?.hex ?? fallbackColor,
-      lightVibrant: palette.LightVibrant?.hex ?? fallbackColor,
-      darkMuted: palette.DarkMuted?.hex ?? fallbackColor,
-      lightMuted: palette.LightMuted?.hex ?? fallbackColor,
-      muted: palette.Muted?.hex ?? fallbackColor,
+      dominant: getDominantSwatch(palette)?.hex ?? fallback,
+      vibrant: palette.Vibrant?.hex ?? fallback,
+      darkVibrant: palette.DarkVibrant?.hex ?? fallback,
+      lightVibrant: palette.LightVibrant?.hex ?? fallback,
+      darkMuted: palette.DarkMuted?.hex ?? fallback,
+      lightMuted: palette.LightMuted?.hex ?? fallback,
+      muted: palette.Muted?.hex ?? fallback,
       platform: 'web',
     };
   },

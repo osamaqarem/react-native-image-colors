@@ -22,7 +22,7 @@ import java.net.URI
 
 class Config : Record {
   @Field
-  val fallbackColor: String = "#000000"
+  val fallback: String = "#000000"
 
   @Field
   val headers: Map<String, String>? = null
@@ -81,7 +81,7 @@ class ImageColorsModule : Module() {
 
     AsyncFunction("getColors") { uri: String, config: Config, promise: Promise ->
       try {
-        val fallbackColorInt = Color.parseColor(config.fallbackColor)
+        val fallbackColorInt = Color.parseColor(config.fallback)
         var image: Bitmap? = null
 
         val context = appContext.reactContext
@@ -142,13 +142,13 @@ class ImageColorsModule : Module() {
             }
           }
         } catch (err: Exception) {
-          result["dominant"] = config.fallbackColor
-          result["vibrant"] =config.fallbackColor
-          result["darkVibrant"] = config.fallbackColor
-          result["lightVibrant"] = config.fallbackColor
-          result["muted"] = config.fallbackColor
-          result["darkMuted"] = config.fallbackColor
-          result["lightMuted"] = config.fallbackColor
+          result["dominant"] = config.fallback
+          result["vibrant"] = config.fallback
+          result["darkVibrant"] = config.fallback
+          result["lightVibrant"] = config.fallback
+          result["muted"] = config.fallback
+          result["darkMuted"] = config.fallback
+          result["lightMuted"] = config.fallback
 
           GlobalScope.launch(Dispatchers.Main) {
             promise.resolve(result)

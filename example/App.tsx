@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import {
   Platform,
   StyleSheet,
@@ -6,12 +6,12 @@ import {
   View,
   Image,
   SafeAreaView,
-} from 'react-native';
-import { getColors } from 'react-native-image-colors';
+} from 'react-native'
+import { getColors } from 'react-native-image-colors'
 
-const yunaUrl = 'https://i.imgur.com/68jyjZT.jpg';
-const catUrl = 'https://i.imgur.com/O3XSdU7.jpg';
-const catImg = require('./assets/cat.jpg');
+const yunaUrl = 'https://i.imgur.com/68jyjZT.jpg'
+const catUrl = 'https://i.imgur.com/O3XSdU7.jpg'
+const catImg = require('./assets/cat.jpg')
 
 const initialState = {
   colorOne: { value: '', name: '' },
@@ -19,18 +19,18 @@ const initialState = {
   colorThree: { value: '', name: '' },
   colorFour: { value: '', name: '' },
   rawResult: '',
-};
+}
 
 export default function App() {
-  const [colors, setColors] = useState(initialState);
-  const [loading, setLoading] = useState(true);
+  const [colors, setColors] = useState(initialState)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchColors = async () => {
       const result = await getColors(yunaUrl, {
-        fallbackColor: '#000000',
+        fallback: '#000000',
         pixelSpacing: 5,
-      });
+      })
 
       switch (result.platform) {
         case 'android':
@@ -41,8 +41,8 @@ export default function App() {
             colorThree: { value: result.vibrant, name: 'vibrant' },
             colorFour: { value: result.darkVibrant, name: 'darkVibrant' },
             rawResult: JSON.stringify(result),
-          });
-          break;
+          })
+          break
         case 'ios':
           setColors({
             colorOne: { value: result.background, name: 'background' },
@@ -50,24 +50,24 @@ export default function App() {
             colorThree: { value: result.primary, name: 'primary' },
             colorFour: { value: result.secondary, name: 'secondary' },
             rawResult: JSON.stringify(result),
-          });
-          break;
+          })
+          break
         default:
-          throw new Error('Unexpected platform');
+          throw new Error('Unexpected platform')
       }
 
-      setLoading(false);
-    };
+      setLoading(false)
+    }
 
-    fetchColors();
-  }, []);
+    fetchColors()
+  }, [])
 
   if (loading) {
     return (
       <View style={styles.container}>
         <Text style={styles.loading}>Loading...</Text>
       </View>
-    );
+    )
   }
 
   return (
@@ -90,12 +90,12 @@ export default function App() {
         <Box name={colors.colorFour.name} value={colors.colorFour.value} />
       </View>
     </View>
-  );
+  )
 }
 
 interface BoxProps {
-  value: string;
-  name: string;
+  value: string
+  name: string
 }
 
 const Box = ({ value, name }: BoxProps) => {
@@ -110,8 +110,8 @@ const Box = ({ value, name }: BoxProps) => {
     >
       <Text style={styles.colorName}>{name}</Text>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   image: {
@@ -157,4 +157,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
   },
-});
+})

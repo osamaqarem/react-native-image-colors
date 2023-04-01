@@ -46,7 +46,7 @@ public class ImageColorsModule: Module {
 
     struct Config: Record {
         @Field
-        var fallbackColor: String = "#000000"
+        var fallback: String = "#000000"
 
         @Field
         var headers: NSDictionary? = nil
@@ -59,7 +59,7 @@ public class ImageColorsModule: Module {
         Name("ImageColors")
 
         AsyncFunction("getColors") { (uri: String, config: Config, promise: Promise) in
-            let fallbackColor = config.fallbackColor
+            let fallbackColor = config.fallback
 
             guard let parsedUri = URL(string: uri) else {
                 let error = NSError.init(domain: ImageColorsModule.ERRORS.INVALID_URL, code: -1)

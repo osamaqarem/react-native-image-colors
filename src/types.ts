@@ -35,7 +35,7 @@ export interface Config {
    * @description Color used when getting color fails. Must be hex
    * @default '#000000'
    */
-  fallbackColor: string;
+  fallback: string;
   /**
    * @description Android only - The number of pixels to skip between each pixel when
    * calculating the average color. Lower numbers give better results, but take longer.
