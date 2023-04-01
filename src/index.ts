@@ -57,4 +57,11 @@ const getColors = async (uri: string, config: Partial<Config>) => {
   return result;
 };
 
+const ImageColors = {
+  getColors,
+  cache,
+}
+
+export default ImageColors;
+
 export { getColors, cache };
