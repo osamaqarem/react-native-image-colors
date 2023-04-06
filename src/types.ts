@@ -50,7 +50,7 @@ export interface Config {
    */
   quality: 'lowest' | 'low' | 'high' | 'highest';
   /**
-   * @description Mobile Only - Additional headers to send when downloading the image.
+   * @description iOS, Android only - Additional headers to send when downloading the image.
    * @platform mobile
    */
   headers: Record<string, string>;
