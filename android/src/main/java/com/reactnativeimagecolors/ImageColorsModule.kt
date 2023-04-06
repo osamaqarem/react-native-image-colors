@@ -18,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+import java.net.MalformedURLException
 import java.net.URI
 
 class Config : Record {
@@ -85,7 +86,8 @@ class ImageColorsModule : Module() {
         var image: Bitmap? = null
 
         val context = appContext.reactContext
-        val resourceId = context?.resources?.getIdentifier(uri, "drawable", context.packageName) ?: 0
+        val resourceId =
+          context?.resources?.getIdentifier(uri, "drawable", context.packageName) ?: 0
 
         // check if local resource
         if (context != null && resourceId != 0) {
@@ -105,7 +107,7 @@ class ImageColorsModule : Module() {
           val connection = parsedUri.toURL().openConnection()
 
           if (config.headers != null) {
-            for(header in config.headers) {
+            for (header in config.headers) {
               connection.setRequestProperty(header.key, header.value)
             }
           }
@@ -154,6 +156,8 @@ class ImageColorsModule : Module() {
             promise.resolve(result)
           }
         }
+      } catch (err: MalformedURLException) {
+        handleError(promise, Exception("Invalid URL"))
       } catch (err: Exception) {
         handleError(promise, err)
       }
