@@ -13,6 +13,7 @@ import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 import expo.modules.kotlin.records.Field
 import expo.modules.kotlin.records.Record
+import kotlinx.coroutines.CoroutineScope
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -20,7 +21,6 @@ import kotlinx.coroutines.launch
 
 import java.net.MalformedURLException
 import java.net.URI
-
 class Config : Record {
   @Field
   val fallback: String = "#000000"
@@ -33,6 +33,7 @@ class Config : Record {
 }
 
 class ImageColorsModule : Module() {
+  private val service = CoroutineScope(Dispatchers.IO)
 
   /**
    * https://gist.github.com/maxjvh/a6ab15cbba9c82a5065d
@@ -81,85 +82,87 @@ class ImageColorsModule : Module() {
     Name("ImageColors")
 
     AsyncFunction("getColors") { uri: String, config: Config, promise: Promise ->
-      try {
-        val fallbackColorInt = Color.parseColor(config.fallback)
-        var image: Bitmap? = null
+      service.launch {
+        try {
+          val fallbackColorInt = Color.parseColor(config.fallback)
+          var image: Bitmap? = null
 
-        val context = appContext.reactContext
-        val resourceId =
-          context?.resources?.getIdentifier(uri, "drawable", context.packageName) ?: 0
+          val context = appContext.reactContext
+          val resourceId =
+            context?.resources?.getIdentifier(uri, "drawable", context.packageName) ?: 0
 
-        // check if local resource
-        if (context != null && resourceId != 0) {
-          image = BitmapFactory.decodeResource(context.resources, resourceId)
-        }
-
-        // check if base64
-        if (uri.startsWith("data:image")) {
-          val base64Uri = uri.split(",")[1]
-          val decodedBytes = Base64.decode(base64Uri, Base64.DEFAULT)
-
-          image = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
-        }
-
-        if (URLUtil.isValidUrl(uri)) {
-          val parsedUri = URI(uri)
-          val connection = parsedUri.toURL().openConnection()
-
-          if (config.headers != null) {
-            for (header in config.headers) {
-              connection.setRequestProperty(header.key, header.value)
-            }
+          // check if local resource
+          if (context != null && resourceId != 0) {
+            image = BitmapFactory.decodeResource(context.resources, resourceId)
           }
 
-          image = BitmapFactory.decodeStream(connection.getInputStream())
-        }
+          // check if base64
+          if (uri.startsWith("data:image")) {
+            val base64Uri = uri.split(",")[1]
+            val decodedBytes = Base64.decode(base64Uri, Base64.DEFAULT)
 
-        if (image == null) {
-          throw Exception("Filed to get image")
-        }
+            image = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+          }
 
-        val paletteBuilder = Palette.Builder(image)
-        val result: MutableMap<String, String> = mutableMapOf()
+          if (URLUtil.isValidUrl(uri)) {
+            val parsedUri = URI(uri)
+            val connection = parsedUri.toURL().openConnection()
 
-        result["average"] = getHex(calculateAverageColor(image, config.pixelSpacing))
-        result["platform"] = "android"
-
-        try {
-          paletteBuilder.generate { palette ->
-            if (palette == null) {
-              throw Exception("Palette was null")
+            if (config.headers != null) {
+              for (header in config.headers) {
+                connection.setRequestProperty(header.key, header.value)
+              }
             }
 
-            result["dominant"] = getHex(palette.getDominantColor(fallbackColorInt))
-            result["vibrant"] = getHex(palette.getVibrantColor(fallbackColorInt))
-            result["darkVibrant"] = getHex(palette.getDarkVibrantColor(fallbackColorInt))
-            result["lightVibrant"] = getHex(palette.getLightVibrantColor(fallbackColorInt))
-            result["muted"] = getHex(palette.getMutedColor(fallbackColorInt))
-            result["darkMuted"] = getHex(palette.getDarkMutedColor(fallbackColorInt))
-            result["lightMuted"] = getHex(palette.getLightMutedColor(fallbackColorInt))
+            image = BitmapFactory.decodeStream(connection.getInputStream())
+          }
+
+          if (image == null) {
+            throw Exception("Filed to get image")
+          }
+
+          val paletteBuilder = Palette.Builder(image)
+          val result: MutableMap<String, String> = mutableMapOf()
+
+          result["average"] = getHex(calculateAverageColor(image, config.pixelSpacing))
+          result["platform"] = "android"
+
+          try {
+            paletteBuilder.generate { palette ->
+              if (palette == null) {
+                throw Exception("Palette was null")
+              }
+
+              result["dominant"] = getHex(palette.getDominantColor(fallbackColorInt))
+              result["vibrant"] = getHex(palette.getVibrantColor(fallbackColorInt))
+              result["darkVibrant"] = getHex(palette.getDarkVibrantColor(fallbackColorInt))
+              result["lightVibrant"] = getHex(palette.getLightVibrantColor(fallbackColorInt))
+              result["muted"] = getHex(palette.getMutedColor(fallbackColorInt))
+              result["darkMuted"] = getHex(palette.getDarkMutedColor(fallbackColorInt))
+              result["lightMuted"] = getHex(palette.getLightMutedColor(fallbackColorInt))
+
+              GlobalScope.launch(Dispatchers.Main) {
+                promise.resolve(result)
+              }
+            }
+          } catch (err: Exception) {
+            result["dominant"] = config.fallback
+            result["vibrant"] = config.fallback
+            result["darkVibrant"] = config.fallback
+            result["lightVibrant"] = config.fallback
+            result["muted"] = config.fallback
+            result["darkMuted"] = config.fallback
+            result["lightMuted"] = config.fallback
 
             GlobalScope.launch(Dispatchers.Main) {
               promise.resolve(result)
             }
           }
+        } catch (err: MalformedURLException) {
+          handleError(promise, Exception("Invalid URL"))
         } catch (err: Exception) {
-          result["dominant"] = config.fallback
-          result["vibrant"] = config.fallback
-          result["darkVibrant"] = config.fallback
-          result["lightVibrant"] = config.fallback
-          result["muted"] = config.fallback
-          result["darkMuted"] = config.fallback
-          result["lightMuted"] = config.fallback
-
-          GlobalScope.launch(Dispatchers.Main) {
-            promise.resolve(result)
-          }
+          handleError(promise, err)
         }
-      } catch (err: MalformedURLException) {
-        handleError(promise, Exception("Invalid URL"))
-      } catch (err: Exception) {
-        handleError(promise, err)
       }
     }
   }
