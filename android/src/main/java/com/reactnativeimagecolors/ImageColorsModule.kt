@@ -36,36 +36,32 @@ class ImageColorsModule : Module() {
   private val service = CoroutineScope(Dispatchers.IO)
 
   /**
-   * https://gist.github.com/maxjvh/a6ab15cbba9c82a5065d
    * pixelSpacing tells how many pixels to skip each pixel.
    * If pixelSpacing > 1: the average color is an estimate, but higher values mean better performance.
    * If pixelSpacing == 1: the average color will be the real average.
    * If pixelSpacing < 1: the method will most likely crash (don't use values below 1).
    */
-  private fun calculateAverageColor(@NonNull bitmap: Bitmap, pixelSpacing: Int): Int {
-    var R = 0
-    var G = 0
-    var B = 0
+  private fun calculateAverageColor(bitmap: Bitmap, pixelSpacing: Int): Int {
+    var redSum = 0
+    var greenSum = 0
+    var blueSum = 0
+    var pixelCount = 0
 
-    val height: Int = bitmap.height
-    val width: Int = bitmap.width
-
-    var n = 0
-    val pixels = IntArray(width * height)
-
-    bitmap.getPixels(pixels, 0, width, 0, 0, width, height)
-
-    var i = 0
-
-    while (i < pixels.size) {
-      val color = pixels[i]
-      R += Color.red(color)
-      G += Color.green(color)
-      B += Color.blue(color)
-      n++
-      i += pixelSpacing
+    for (x in 0 until bitmap.width step pixelSpacing) {
+      for (y in 0 until bitmap.height step pixelSpacing) {
+        val pixel = bitmap.getPixel(x, y)
+        redSum += Color.red(pixel)
+        greenSum += Color.green(pixel)
+        blueSum += Color.blue(pixel)
+        pixelCount++
+      }
     }
-    return Color.rgb(R / n, G / n, B / n)
+
+    val redAvg = redSum / pixelCount
+    val greenAvg = greenSum / pixelCount
+    val blueAvg = blueSum / pixelCount
+
+    return Color.rgb(redAvg, greenAvg, blueAvg)
   }
 
   private fun getHex(rgb: Int): String {
