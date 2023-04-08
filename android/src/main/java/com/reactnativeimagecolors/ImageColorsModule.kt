@@ -124,22 +124,18 @@ class ImageColorsModule : Module() {
           result["platform"] = "android"
 
           try {
-            paletteBuilder.generate { palette ->
-              if (palette == null) {
-                throw Exception("Palette was null")
-              }
+            val palette = paletteBuilder.generate()
 
-              result["dominant"] = getHex(palette.getDominantColor(fallbackColorInt))
-              result["vibrant"] = getHex(palette.getVibrantColor(fallbackColorInt))
-              result["darkVibrant"] = getHex(palette.getDarkVibrantColor(fallbackColorInt))
-              result["lightVibrant"] = getHex(palette.getLightVibrantColor(fallbackColorInt))
-              result["muted"] = getHex(palette.getMutedColor(fallbackColorInt))
-              result["darkMuted"] = getHex(palette.getDarkMutedColor(fallbackColorInt))
-              result["lightMuted"] = getHex(palette.getLightMutedColor(fallbackColorInt))
+            result["dominant"] = getHex(palette.getDominantColor(fallbackColorInt))
+            result["vibrant"] = getHex(palette.getVibrantColor(fallbackColorInt))
+            result["darkVibrant"] = getHex(palette.getDarkVibrantColor(fallbackColorInt))
+            result["lightVibrant"] = getHex(palette.getLightVibrantColor(fallbackColorInt))
+            result["muted"] = getHex(palette.getMutedColor(fallbackColorInt))
+            result["darkMuted"] = getHex(palette.getDarkMutedColor(fallbackColorInt))
+            result["lightMuted"] = getHex(palette.getLightMutedColor(fallbackColorInt))
 
-              GlobalScope.launch(Dispatchers.Main) {
-                promise.resolve(result)
-              }
+            GlobalScope.launch(Dispatchers.Main) {
+              promise.resolve(result)
             }
           } catch (err: Exception) {
             result["dominant"] = config.fallback
