@@ -4,9 +4,11 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.util.Base64
+import android.util.Log
 import android.webkit.URLUtil
 import androidx.palette.graphics.Palette
 
+import expo.modules.core.errors.ModuleDestroyedException
 import expo.modules.kotlin.Promise
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
@@ -160,6 +162,14 @@ class ImageColorsModule : Module() {
           handleError(promise, Exception("Invalid URL"))
         } catch (err: Exception) {
           handleError(promise, err)
+        }
+      }
+
+      OnDestroy {
+        try {
+          service.cancel(ModuleDestroyedException())
+        } catch (e: IllegalStateException) {
+          Log.e("[ImageColors]", "The scope does not have a job in it")
         }
       }
     }
