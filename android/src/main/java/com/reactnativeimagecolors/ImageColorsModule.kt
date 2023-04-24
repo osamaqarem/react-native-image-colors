@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.util.Base64
 import android.webkit.URLUtil
-import androidx.annotation.NonNull
 import androidx.palette.graphics.Palette
 
 import expo.modules.kotlin.Promise
@@ -13,14 +12,13 @@ import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 import expo.modules.kotlin.records.Field
 import expo.modules.kotlin.records.Record
-import kotlinx.coroutines.CoroutineScope
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlin.math.ceil
 
 import java.net.MalformedURLException
 import java.net.URI
+
 class Config : Record {
   @Field
   val fallback: String = "#000000"
@@ -42,26 +40,40 @@ class ImageColorsModule : Module() {
    * If pixelSpacing < 1: the method will most likely crash (don't use values below 1).
    */
   private fun calculateAverageColor(bitmap: Bitmap, pixelSpacing: Int): Int {
+    val segmentWidth = 500
+
+    val width = bitmap.width
+    val height = bitmap.height
+
+    val numSegments = ceil(width.toDouble() / segmentWidth).toInt()
+    val segmentPixels = IntArray(segmentWidth * height)
+
     var redSum = 0
     var greenSum = 0
     var blueSum = 0
     var pixelCount = 0
 
-    for (x in 0 until bitmap.width step pixelSpacing) {
-      for (y in 0 until bitmap.height step pixelSpacing) {
-        val pixel = bitmap.getPixel(x, y)
-        redSum += Color.red(pixel)
-        greenSum += Color.green(pixel)
-        blueSum += Color.blue(pixel)
+    for (i in 0 until numSegments) {
+      val xStart = i * segmentWidth
+      val xEnd = minOf(width, (i + 1) * segmentWidth)
+
+      bitmap.getPixels(segmentPixels, 0, segmentWidth, xStart, 0, xEnd - xStart, height)
+
+      for (index in segmentPixels.indices step pixelSpacing) {
+        redSum += Color.red(segmentPixels[index])
+        greenSum += Color.green(segmentPixels[index])
+        blueSum += Color.blue(segmentPixels[index])
         pixelCount++
       }
     }
-
-    val redAvg = redSum / pixelCount
-    val greenAvg = greenSum / pixelCount
-    val blueAvg = blueSum / pixelCount
-
-    return Color.rgb(redAvg, greenAvg, blueAvg)
+    return if (pixelCount == 0) {
+      Color.BLACK
+    } else {
+      val red = redSum / pixelCount
+      val green = greenSum / pixelCount
+      val blue = blueSum / pixelCount
+      Color.rgb(red, green, blue)
+    }
   }
 
   private fun getHex(rgb: Int): String {
