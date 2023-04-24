@@ -81,9 +81,7 @@ class ImageColorsModule : Module() {
   }
 
   private fun handleError(promise: Promise, err: Exception) {
-    GlobalScope.launch(Dispatchers.Main) {
-      promise.reject("[ImageColors] Error", err.message, err)
-    }
+    promise.reject("[ImageColors]", err.message, err)
   }
 
   override fun definition() = ModuleDefinition {
@@ -146,9 +144,7 @@ class ImageColorsModule : Module() {
             result["darkMuted"] = getHex(palette.getDarkMutedColor(fallbackColorInt))
             result["lightMuted"] = getHex(palette.getLightMutedColor(fallbackColorInt))
 
-            GlobalScope.launch(Dispatchers.Main) {
-              promise.resolve(result)
-            }
+            promise.resolve(result)
           } catch (err: Exception) {
             result["dominant"] = config.fallback
             result["vibrant"] = config.fallback
@@ -158,9 +154,7 @@ class ImageColorsModule : Module() {
             result["darkMuted"] = config.fallback
             result["lightMuted"] = config.fallback
 
-            GlobalScope.launch(Dispatchers.Main) {
-              promise.resolve(result)
-            }
+            promise.resolve(result)
           }
         } catch (err: MalformedURLException) {
           handleError(promise, Exception("Invalid URL"))
