@@ -129,9 +129,7 @@ public class ImageColorsModule: Module {
                         resultDict["detail"] = fallbackColor
                     }
 
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                        promise.resolve(resultDict)
-                    }
+                    promise.resolve(resultDict)
                 }
             }.resume()
         }
