@@ -19,7 +19,15 @@
     "react-native",
     "expo",
     "react-native-image-colors",
-    "RNImageColors"
+    "RNImageColors",
+    "ios",
+    "android",
+    "react",
+    "image",
+    "dominant",
+    "average",
+    "color",
+    "palette"
   ],
   "repository": "https://github.com/osamaqarem/react-native-image-colors",
   "bugs": {
