@@ -1,4 +1,5 @@
 import { requireNativeModule } from 'expo-modules-core'
+
 import * as ImageColors from '..'
 import type { IOSImageColors } from '../types'
 
