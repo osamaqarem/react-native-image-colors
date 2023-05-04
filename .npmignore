@@ -1,0 +1,35 @@
+example
+lib/typescript/example
+ios/build
+ios/ImageColors.xcodeproj/xcuserdata
+ios/ImageColors.xcodeproj/project.xcworkspace
+android/build/
+android/.gradle
+android/.idea
+android/app/build
+assets
+
+# Ignore development dependencies and files
+/.vscode
+/.idea
+/.jest
+/.github
+*.log
+
+# Ignore common package manager files
+node_modules
+package-lock.json
+yarn.lock
+npm-debug.log
+
+# Ignore miscellaneous files
+.DS_Store
+*.bak
+*.backup
+*.swp
+*.tmp
+*.zip
+*.rar
+*.tar.gz
+*.tgz
+*.log
