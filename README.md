@@ -39,77 +39,90 @@ This module is a wrapper around the [Palette](https://developer.android.com/refe
 
 ## Installation
 
-```
-npm install react-native-image-colors
-```
+- [Expo](#expo)
+- [React Native CLI](#react-native-cli)
+- [Web](#web)
+
+### Expo
+
+#### Requirements
+
+- Expo SDK 47+
 
 ```
 yarn add react-native-image-colors
 ```
 
-### Expo
-react-native-image-colors requires Expo SDK 47+
+```
+npx expo prebuild
+```
 
-Please ensure that your app has at least iOS 13 as a deployment target, which is required for `react-native-image-colors` as well as Expo SDK 47+
-
-Build custom native code
+iOS
 
 ```
-expo prebuild
+npx expo run:ios
+```
 
-# iOS
-expo run:ios
+Android
 
-# Android
-expo run:android
+```
+npx expo run:android
 ```
 
 > The [example](https://github.com/osamaqarem/react-native-image-colors/blob/master/example/package.json) is an expo app.
 
-### Android
+### React Native CLI
 
-Rebuild the app.
+#### Requirements
 
-### iOS
+- [Expo modules](https://docs.expo.dev/bare/installing-expo-modules/) must be configured (min. iOS 13)
 
-Install the pod, then rebuild the app.
+```
+yarn add react-native-image-colors
+```
+
+iOS
 
 ```
 npx pod-install
 ```
 
+```
+npx react-native run-ios
+```
+
+Android
+
+```
+npx react-native run-android
+```
+
 ### Web
 
-You're good to go!
+```
+yarn add react-native-image-colors
+```
 
 ## Usage
 
 ```js
-import ImageColors from 'react-native-image-colors'
+import React from 'react'
+import { getColors } from 'react-native-image-colors'
 
-const uri = require('./cool.jpg')
+const useImageColors = () => {
+  const [colors, setColors] = React.useState(null)
 
-const result = await ImageColors.getColors(uri, {
-  fallback: '#228B22',
-  cache: true,
-  key: 'unique_key',
-})
+  React.useEffect(() => {
+    const url = 'https://i.imgur.com/68jyjZT.jpg'
 
-switch (result.platform) {
-  case 'android':
-    // android result properties
-    const vibrantColor = result.vibrant
-    break
-  case 'web':
-    // web result properties
-    const lightVibrantColor = result.lightVibrant
-    break
-  case 'ios':
-    // iOS result properties
-    const primaryColor = result.primary
-    break
-  default:
-    throw new Error('Unexpected platform key')
+    getColors(url, {
+      fallback: '#228B22',
+      cache: true,
+      key: url,
+    }).then(setColors)
+  }, [])
+
+  return colors
 }
 ```
 
@@ -139,16 +152,18 @@ A string which can be:
 
   > The mime type prefix for base64 is required (e.g. data:image/png;base64).
 
-#### `Config`
+#### `Config?`
 
-| Property       | Description                                                                                                                                                                                    | Type                                                   | Required | Default     | Supported platforms |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | -------- | ----------- | ------------------- |
-| `fallback`     | If a color property couldn't be retrieved, it will default to this hex color string (**note**: do not use shorthand hex. e.g. `#fff`).                                                         | `string`                                               | No       | `"#000000"` | All                 |
-| `cache`        | Enables in-memory caching of the result - skip downloading the same image next time.                                                                                                           | `boolean`                                              | No       | `false`     | All                 |
-| `key`          | Unique key to use for the cache entry. The image URI is used as the unique key by default. You should explicitly pass a key if you enable caching and you're using a base64 string as the URI. | `string`                                               | No       | `undefined` | All                 |
-| `headers`      | HTTP headers to be sent along with the GET request to download the image                                                                                                                       | `Record<string, string>`                               | No       | `undefined` | iOS, Android        |
-| `pixelSpacing` | How many pixels to skip when iterating over image pixels. Higher means better performance (**note**: value cannot be lower than 1).                                                            | `number`                                               | No       | `5`         | Android             |
-| `quality`      | Highest implies no downscaling and very good colors.                                                                                                                                           | `'lowest'` <br> `'low'` <br> `'high'` <br> `'highest'` | No       | `"low"`     | iOS, Web            |
+The config object is optional.
+
+| Property       | Description                                                                                                                                                                                    | Type                                                   | Default     | Supported platforms |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | ----------- | ------------------- |
+| `fallback`     | If a color property couldn't be retrieved, it will default to this hex color string (**note**: do not use shorthand hex. e.g. `#fff`).                                                         | `string`                                               | `"#000000"` | All                 |
+| `cache`        | Enables in-memory caching of the result - skip downloading the same image next time.                                                                                                           | `boolean`                                              | `false`     | All                 |
+| `key`          | Unique key to use for the cache entry. The image URI is used as the unique key by default. You should explicitly pass a key if you enable caching and you're using a base64 string as the URI. | `string`                                               | `undefined` | All                 |
+| `headers`      | HTTP headers to be sent along with the GET request to download the image                                                                                                                       | `Record<string, string>`                               | `undefined` | iOS, Android        |
+| `pixelSpacing` | How many pixels to skip when iterating over image pixels. Higher means better performance (**note**: value cannot be lower than 1).                                                            | `number`                                               | `5`         | Android             |
+| `quality`      | Highest implies no downscaling and very good colors.                                                                                                                                           | `'lowest'` <br> `'low'` <br> `'high'` <br> `'highest'` | `"low"`     | iOS, Web            |
 
 ### `ImageColorsResult`
 
