@@ -28,7 +28,7 @@ const resolveImageSource = (source: string | ImageRequireSource): string => {
  * ```
  * @param config - configuration
  */
-const getColors = async (uri: string, config: Partial<Config>) => {
+const getColors = async (uri: string, config: Partial<Config> = {}) => {
   const resolvedSrc = resolveImageSource(uri)
 
   if (config?.cache) {
