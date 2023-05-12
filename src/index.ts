@@ -65,3 +65,4 @@ const ImageColors = {
 export default ImageColors
 
 export { getColors, cache }
+export type { ImageColorsResult }
