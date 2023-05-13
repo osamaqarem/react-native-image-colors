@@ -210,5 +210,5 @@ Every result object contains a respective `platform` key to help narrow down the
 
 ### Notes
 
-- There is an [example](https://github.com/osamaqarem/react-native-image-colors/blob/master/example/App.js) app.
+- There is an [example](https://github.com/osamaqarem/react-native-image-colors/blob/master/example/App.tsx) app.
 - Since the implementation of each platform is different you can get **different color results for each**.
