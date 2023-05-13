@@ -1,8 +1,10 @@
-import { Image } from 'react-native'
-import { RNImageColors } from './module'
+// Import the native module. On web, it will be resolved to RNImageColors.web.ts
+// and on native platforms to RNImageColors.ts
+import { ImageRequireSource, Image } from 'react-native'
+
 import { cache } from './cache'
-import type { ImageRequireSource } from 'react-native'
-import type { ImageColorsResult, RNImageColorsModule } from './types'
+import RNImageColorsModule from './module'
+import { ImageColorsResult, Config } from './types'
 
 const MAX_KEY_LEN = 500
 
@@ -14,8 +16,20 @@ const resolveImageSource = (source: string | ImageRequireSource): string => {
   }
 }
 
-const getColors: RNImageColorsModule['getColors'] = async (source, config) => {
-  const resolvedSrc = resolveImageSource(source)
+/**
+ *
+ * @param uri - source of the image. Can be a remote URL, a base64 string or a local file path.
+ * ```ts
+ *  const fromUrl = await getColors('https://example.com/image.jpg')
+ *
+ *  const fromBase64 = await getColors('data:image/jpeg;base64,/9j/4Ri...')
+ *
+ *  const fromLocalFile = await getColors(require('./images/cat.jpg'))
+ * ```
+ * @param config - configuration
+ */
+const getColors = async (uri: string, config: Partial<Config> = {}) => {
+  const resolvedSrc = resolveImageSource(uri)
 
   if (config?.cache) {
     const cachedResult = config.key
@@ -25,7 +39,7 @@ const getColors: RNImageColorsModule['getColors'] = async (source, config) => {
     if (cachedResult) return cachedResult
   }
 
-  const result: ImageColorsResult = await RNImageColors.getColors(
+  const result: ImageColorsResult = await RNImageColorsModule.getColors(
     resolvedSrc,
     config
   )
@@ -43,9 +57,12 @@ const getColors: RNImageColorsModule['getColors'] = async (source, config) => {
   return result
 }
 
-const ImageColors: RNImageColorsModule = {
+const ImageColors = {
   getColors,
   cache,
 }
 
 export default ImageColors
+
+export { getColors, cache }
+export type { ImageColorsResult }

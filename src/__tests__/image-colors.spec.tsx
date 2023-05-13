@@ -1,15 +1,14 @@
-import { NativeModules } from 'react-native'
-import ImageColors from '..'
+import { requireNativeModule } from 'expo-modules-core'
+
+import * as ImageColors from '..'
 import type { IOSImageColors } from '../types'
 
-const { ImageColors: NativeImageColors } = NativeModules
+const NativeImageColors = requireNativeModule('ImageColors')
 
-jest.mock('react-native', () => ({
-  NativeModules: {
-    ImageColors: {
-      getColors: jest.fn(),
-    },
-  },
+jest.mock('expo-modules-core', () => ({
+  requireNativeModule: jest.fn().mockReturnValue({
+    getColors: jest.fn(),
+  }),
 }))
 
 const mockResult: IOSImageColors = {
@@ -24,11 +23,11 @@ const mockResult: IOSImageColors = {
 const uri = 'uri'
 
 describe('react-native-image-colors', () => {
-  describe('getColors', () => {
-    beforeAll(() => {
-      NativeImageColors.getColors = jest.fn().mockReturnValue(mockResult)
-    })
+  beforeEach(() => {
+    NativeImageColors.getColors = jest.fn().mockReturnValue({ ...mockResult })
+  })
 
+  describe('getColors', () => {
     describe('when cache is enabled', () => {
       afterEach(() => {
         jest.restoreAllMocks()
@@ -87,6 +86,7 @@ describe('react-native-image-colors', () => {
 
         it('uses key if it is defined', async () => {
           const key = 'key'
+
           await ImageColors.getColors(uri, { cache: true, key })
 
           expect(ImageColors.cache.getItem).toHaveBeenCalledWith(key)

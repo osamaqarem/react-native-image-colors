@@ -1,4 +1,2 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.reactnativeimagecolors">
-
+<manifest package="com.reactnativeimagecolors">
 </manifest>

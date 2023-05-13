@@ -1,0 +1,17 @@
+{
+  "platforms": [
+    "ios",
+    "android",
+    "web"
+  ],
+  "ios": {
+    "modules": [
+      "ImageColorsModule"
+    ]
+  },
+  "android": {
+    "modules": [
+      "com.reactnativeimagecolors.ImageColorsModule"
+    ]
+  }
+}
