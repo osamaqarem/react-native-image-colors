@@ -59,6 +59,7 @@ afterEvaluate {
 }
 
 android {
+  namespace = "com.reactnativeimagecolors"
   compileSdkVersion safeExtGet("compileSdkVersion", 31)
 
   compileOptions {
