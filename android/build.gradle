@@ -59,7 +59,10 @@ afterEvaluate {
 }
 
 android {
-  namespace = "com.reactnativeimagecolors"
+  def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
+  if (agpVersion.tokenize('.')[0].toInteger() >= 7) {
+    namespace = "com.reactnativeimagecolors"
+  }
   compileSdkVersion safeExtGet("compileSdkVersion", 31)
 
   compileOptions {
