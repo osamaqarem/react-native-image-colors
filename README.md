@@ -75,7 +75,11 @@ npx expo run:android
 
 #### Requirements
 
-- [Expo modules](https://docs.expo.dev/bare/installing-expo-modules/) must be configured (min. iOS 13)
+- React Native v0.70.0+
+- iOS 13+
+- [Expo modules](https://docs.expo.dev/bare/installing-expo-modules/) must be configured
+
+> Users on < RN0.69 and older can use v1.x.x
 
 ```
 yarn add react-native-image-colors
