@@ -78,7 +78,7 @@ class ImageColorsModule : Module() {
     }
   }
 
-  private fun verifyFallbackColor(hex: String): String {
+  private fun parseFallbackColor(hex: String): String {
     if(!hex.matches(Regex("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"))) {
       throw Exception("Invalid fallback hex color. Must be in the format #ffffff or #fff")
     }
@@ -104,7 +104,7 @@ class ImageColorsModule : Module() {
     AsyncFunction("getColors") { uri: String, config: Config, promise: Promise ->
       service.launch {
         try {
-          val fallbackColor = verifyFallbackColor(config.fallback)
+          val fallbackColor = parseFallbackColor(config.fallback)
           val fallbackColorInt = Color.parseColor(fallbackColor)
           var image: Bitmap? = null
 

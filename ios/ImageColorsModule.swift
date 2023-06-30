@@ -45,7 +45,7 @@ public class ImageColorsModule: Module {
         return String(format: "#%06X", rgb)
     }
 
-    private func verifyFallbackColor(hexColor: String) -> String? {
+    private func parseFallbackColor(hexColor: String) -> String? {
         let regex = try! NSRegularExpression(pattern: "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$", options: .caseInsensitive)
 
         let range = NSRange(location: 0, length: hexColor.utf16.count)
@@ -81,7 +81,7 @@ public class ImageColorsModule: Module {
         Name("ImageColors")
 
         AsyncFunction("getColors") { (uri: String, config: Config, promise: Promise) in
-            guard let fallbackColor = verifyFallbackColor(hexColor: config.fallback) else {
+            guard let fallbackColor = parseFallbackColor(hexColor: config.fallback) else {
                 let error = NSError.init(domain: ImageColorsModule.ERRORS.INVALID_FALLBACK_COLOR, code: -1)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                     promise.reject(error)
