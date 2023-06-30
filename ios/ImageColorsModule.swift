@@ -83,17 +83,13 @@ public class ImageColorsModule: Module {
         AsyncFunction("getColors") { (uri: String, config: Config, promise: Promise) in
             guard let fallbackColor = parseFallbackColor(hexColor: config.fallback) else {
                 let error = NSError.init(domain: ImageColorsModule.ERRORS.INVALID_FALLBACK_COLOR, code: -1)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                    promise.reject(error)
-                }
+                promise.reject(error)
                 return
             }
 
             guard let parsedUri = URL(string: uri) else {
                 let error = NSError.init(domain: ImageColorsModule.ERRORS.INVALID_URL, code: -1)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                    promise.reject(error)
-                }
+                promise.reject(error)
                 return
             }
 
@@ -111,17 +107,13 @@ public class ImageColorsModule: Module {
 
             URLSession.shared.dataTask(with: request) { [unowned self] (data, response, error) in
                 guard let data = data, error == nil else {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                        promise.reject(NSError.init(domain: ImageColorsModule.ERRORS.DOWNLOAD_ERR, code: -2))
-                    }
+                    promise.reject(NSError.init(domain: ImageColorsModule.ERRORS.DOWNLOAD_ERR, code: -2))
                     return
                 }
 
                 guard let uiImage = UIImage(data: data) else {
                     let error = NSError.init(domain: ImageColorsModule.ERRORS.PARSE_ERR, code: -3)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                        promise.reject(error)
-                    }
+                    promise.reject(error)
                     return
                 }
 
