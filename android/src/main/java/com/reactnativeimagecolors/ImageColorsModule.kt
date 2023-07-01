@@ -78,6 +78,18 @@ class ImageColorsModule : Module() {
     }
   }
 
+  private fun parseFallbackColor(hex: String): String {
+    if(!hex.matches(Regex("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"))) {
+      throw Exception("Invalid fallback hex color. Must be in the format #ffffff or #fff")
+    }
+
+    if(hex.length == 7) {
+      return hex
+    }
+
+    return "#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}"
+  }
+
   private fun getHex(rgb: Int): String {
     return String.format("#%06X", 0xFFFFFF and rgb)
   }
@@ -92,7 +104,8 @@ class ImageColorsModule : Module() {
     AsyncFunction("getColors") { uri: String, config: Config, promise: Promise ->
       service.launch {
         try {
-          val fallbackColorInt = Color.parseColor(config.fallback)
+          val fallbackColor = parseFallbackColor(config.fallback)
+          val fallbackColorInt = Color.parseColor(fallbackColor)
           var image: Bitmap? = null
 
           val context = appContext.reactContext
@@ -148,13 +161,13 @@ class ImageColorsModule : Module() {
 
             promise.resolve(result)
           } catch (err: Exception) {
-            result["dominant"] = config.fallback
-            result["vibrant"] = config.fallback
-            result["darkVibrant"] = config.fallback
-            result["lightVibrant"] = config.fallback
-            result["muted"] = config.fallback
-            result["darkMuted"] = config.fallback
-            result["lightMuted"] = config.fallback
+            result["dominant"] = fallbackColor
+            result["vibrant"] = fallbackColor
+            result["darkVibrant"] = fallbackColor
+            result["lightVibrant"] = fallbackColor
+            result["muted"] = fallbackColor
+            result["darkMuted"] = fallbackColor
+            result["lightMuted"] = fallbackColor
 
             promise.resolve(result)
           }

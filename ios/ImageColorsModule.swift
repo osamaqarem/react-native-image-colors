@@ -4,9 +4,10 @@ import UIKit
 public class ImageColorsModule: Module {
 
     enum ERRORS {
-        static let INVALID_URL = "Invalid URL";
+        static let INVALID_URL = "Invalid URL.";
         static let DOWNLOAD_ERR = "Could not download image.";
         static let PARSE_ERR = "Could not parse image.";
+        static let INVALID_FALLBACK_COLOR = "Invalid fallback hex color. Must be in the format #ffffff or #fff.";
     }
 
     enum QUALITY {
@@ -44,6 +45,27 @@ public class ImageColorsModule: Module {
         return String(format: "#%06X", rgb)
     }
 
+    private func parseFallbackColor(hexColor: String) -> String? {
+        let regex = try! NSRegularExpression(pattern: "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$", options: .caseInsensitive)
+
+        let range = NSRange(location: 0, length: hexColor.utf16.count)
+        let match = regex.firstMatch(in: hexColor, options: [], range: range)
+
+        if match == nil {
+            return nil
+        }
+
+        if hexColor.count == 7 {
+            return hexColor
+        }
+
+        let red = String(hexColor[hexColor.index(hexColor.startIndex, offsetBy: 1)])
+        let green = String(hexColor[hexColor.index(hexColor.startIndex, offsetBy: 2)])
+        let blue = String(hexColor[hexColor.index(hexColor.startIndex, offsetBy: 3)])
+        
+        return "#\(red)\(red)\(green)\(green)\(blue)\(blue)"
+    }
+
     struct Config: Record {
         @Field
         var fallback: String = "#000000"
@@ -59,13 +81,15 @@ public class ImageColorsModule: Module {
         Name("ImageColors")
 
         AsyncFunction("getColors") { (uri: String, config: Config, promise: Promise) in
-            let fallbackColor = config.fallback
+            guard let fallbackColor = parseFallbackColor(hexColor: config.fallback) else {
+                let error = NSError.init(domain: ImageColorsModule.ERRORS.INVALID_FALLBACK_COLOR, code: -1)
+                promise.reject(error)
+                return
+            }
 
             guard let parsedUri = URL(string: uri) else {
                 let error = NSError.init(domain: ImageColorsModule.ERRORS.INVALID_URL, code: -1)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                    promise.reject(error)
-                }
+                promise.reject(error)
                 return
             }
 
@@ -83,17 +107,13 @@ public class ImageColorsModule: Module {
 
             URLSession.shared.dataTask(with: request) { [unowned self] (data, response, error) in
                 guard let data = data, error == nil else {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                        promise.reject(NSError.init(domain: ImageColorsModule.ERRORS.DOWNLOAD_ERR, code: -2))
-                    }
+                    promise.reject(NSError.init(domain: ImageColorsModule.ERRORS.DOWNLOAD_ERR, code: -2))
                     return
                 }
 
                 guard let uiImage = UIImage(data: data) else {
                     let error = NSError.init(domain: ImageColorsModule.ERRORS.PARSE_ERR, code: -3)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                        promise.reject(error)
-                    }
+                    promise.reject(error)
                     return
                 }
 
