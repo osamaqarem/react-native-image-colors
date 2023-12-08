@@ -71,7 +71,7 @@ public class ImageColorsModule: Module {
         var fallback: String = "#000000"
 
         @Field
-        var headers: NSDictionary? = nil
+        var headers: [String: Any]? = nil
 
         @Field
         var quality: String = QUALITY.LOW
@@ -96,11 +96,11 @@ public class ImageColorsModule: Module {
             var request = URLRequest(url: parsedUri)
 
             if let headers = config.headers {
-                let allKeys = headers.allKeys
+                let allKeys = Array(headers.keys)
 
                 allKeys.forEach { (key) in
                     let key = key as! String
-                    let value = headers.value(forKey: key) as? String
+                    let value = headers[key] as? String
                     request.setValue(value, forHTTPHeaderField: key)
                 }
             }
