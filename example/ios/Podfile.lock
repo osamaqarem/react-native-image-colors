@@ -36,7 +36,7 @@ PODS:
   - hermes-engine (0.72.1):
     - hermes-engine/Pre-built (= 0.72.1)
   - hermes-engine/Pre-built (0.72.1)
-  - ImageColors (2.2.0):
+  - ImageColors (2.3.0):
     - ExpoModulesCore
   - libevent (2.1.12)
   - RCT-Folly (2021.07.22.00):
@@ -624,7 +624,7 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: 9df83855a0fd15ef8eb61694652bae636b0c466e
-  ImageColors: e3ab3a2c2b7ea5629c22b46f27f6b28f27ae9350
+  ImageColors: 141ef745d7a15d766109cbd93559cfc2319b8c2d
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: c52ee8fb2b35c1b54031dd8e92d88ad4dba8f2ce
@@ -663,4 +663,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 1b763c9a339b842c1abde71f5b766ca503d1a174
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.14.3

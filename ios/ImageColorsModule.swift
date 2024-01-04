@@ -4,17 +4,17 @@ import UIKit
 public class ImageColorsModule: Module {
 
     enum ERRORS {
-        static let INVALID_URL = "Invalid URL.";
-        static let DOWNLOAD_ERR = "Could not download image.";
-        static let PARSE_ERR = "Could not parse image.";
-        static let INVALID_FALLBACK_COLOR = "Invalid fallback hex color. Must be in the format #ffffff or #fff.";
+        static let INVALID_URL = "Invalid URL."
+        static let DOWNLOAD_ERR = "Could not download image."
+        static let PARSE_ERR = "Could not parse image."
+        static let INVALID_FALLBACK_COLOR = "Invalid fallback hex color. Must be in the format #ffffff or #fff."
     }
 
     enum QUALITY {
-        static let LOWEST = "lowest";
-        static let LOW = "low";
-        static let HIGH = "high";
-        static let HIGHEST = "highest";
+        static let LOWEST = "lowest"
+        static let LOW = "low"
+        static let HIGH = "high"
+        static let HIGHEST = "highest"
     }
 
     private func getQuality(qualityOption: String) -> UIImageColorsQuality {
@@ -34,7 +34,7 @@ public class ImageColorsModule: Module {
 
 
     private func toHexString(color: UIColor) -> String {
-        let comp = color.cgColor.components;
+        let comp = color.cgColor.components
 
         let r: CGFloat = comp![0]
         let g: CGFloat = comp![1]
@@ -62,7 +62,7 @@ public class ImageColorsModule: Module {
         let red = String(hexColor[hexColor.index(hexColor.startIndex, offsetBy: 1)])
         let green = String(hexColor[hexColor.index(hexColor.startIndex, offsetBy: 2)])
         let blue = String(hexColor[hexColor.index(hexColor.startIndex, offsetBy: 3)])
-        
+
         return "#\(red)\(red)\(green)\(green)\(blue)\(blue)"
     }
 
@@ -71,7 +71,7 @@ public class ImageColorsModule: Module {
         var fallback: String = "#000000"
 
         @Field
-        var headers: NSDictionary? = nil
+        var headers: [String: String]? = [:]
 
         @Field
         var quality: String = QUALITY.LOW
@@ -95,14 +95,8 @@ public class ImageColorsModule: Module {
 
             var request = URLRequest(url: parsedUri)
 
-            if let headers = config.headers {
-                let allKeys = headers.allKeys
-
-                allKeys.forEach { (key) in
-                    let key = key as! String
-                    let value = headers.value(forKey: key) as? String
-                    request.setValue(value, forHTTPHeaderField: key)
-                }
+            config.headers?.forEach { key, value in
+                request.setValue(value, forHTTPHeaderField: key)
             }
 
             URLSession.shared.dataTask(with: request) { [unowned self] (data, response, error) in
