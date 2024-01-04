@@ -1,6 +1,6 @@
 {
   "name": "react-native-image-colors",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Fetch prominent colors from an image.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -64,6 +64,10 @@
       "node_modules/(?!@react-native|react-native|expo-modules-core)"
     ]
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "release-it": {
     "git": {
       "commitMessage": "chore: release ${version}",
@@ -73,12 +77,9 @@
       "publish": true
     },
     "github": {
-      "release": true
-    },
-    "plugins": {
-      "@release-it/conventional-changelog": {
-        "preset": "angular"
-      }
+      "release": true,
+      "autoGenerate": true,
+      "releaseName": "${version}"
     }
   }
 }
