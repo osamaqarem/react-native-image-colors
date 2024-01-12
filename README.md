@@ -76,7 +76,7 @@ npx expo run:android
 #### Requirements
 
 - React Native v0.70.0+
-- iOS 13+
+- iOS 13.4+
 - [Expo modules](https://docs.expo.dev/bare/installing-expo-modules/) must be configured
 
 > Users on < RN0.69 and older can use v1.x.x
