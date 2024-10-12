@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  SafeAreaView,
-} from 'react-native'
+import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import { getColors } from 'react-native-image-colors'
 
 const yunaUrl = 'https://i.imgur.com/68jyjZT.jpg'
@@ -21,7 +14,7 @@ const initialState = {
   rawResult: '',
 }
 
-export default function App() {
+export default function Page() {
   const [colors, setColors] = useState(initialState)
   const [loading, setLoading] = useState(true)
 
@@ -137,11 +130,7 @@ const styles = StyleSheet.create({
   resultContainer: {
     flex: 1,
     padding: 20,
-    width: Platform.select({
-      web: 'fill-available',
-      ios: '100%',
-      android: '100%',
-    }),
+    width: '100%',
   },
   container: {
     flex: 1,

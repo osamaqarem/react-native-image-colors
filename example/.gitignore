@@ -73,3 +73,6 @@ web-build/
 dist/
 
 # @end expo-cli
+
+/ios
+/android
