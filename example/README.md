@@ -24,7 +24,7 @@ yarn ios
 yarn android
 ```
 
-You only have to run the above steps once. To start the app again, you use `yarn start`.
+You only have to run the above steps once. To start the app again, you can use `yarn start`.
 
 ### Web
 
