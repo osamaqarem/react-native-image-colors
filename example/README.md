@@ -1,28 +1,32 @@
-# Running the example app
+# Example
 
-## iOS & Android
+## Running the app
 
-1. Generate native projects:
+### iOS & Android
+
+Generate native projects:
 
 ```
 npx expo prebuild
 ```
 
-2. Build & run:
+Then build & run:
 
-iOS
+#### iOS
 
 ```
 yarn ios
 ```
 
-Android
+#### Android
 
 ```
 yarn android
 ```
 
-## Web
+You only have to run the above steps once. To star the app again, you use `yarn start`.
+
+### Web
 
 ```
 yarn web
