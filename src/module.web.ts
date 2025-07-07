@@ -1,5 +1,5 @@
-import Vibrant from 'node-vibrant'
-import { Palette } from 'node-vibrant/lib/color'
+import { Palette } from '@vibrant/color'
+import { Vibrant } from 'node-vibrant/browser'
 
 import type { Config, WebImageColors } from './types'
 

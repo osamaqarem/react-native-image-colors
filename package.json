@@ -37,7 +37,7 @@
   "license": "MIT",
   "homepage": "https://github.com/osamaqarem/react-native-image-colors#readme",
   "dependencies": {
-    "node-vibrant": "3.1.6"
+    "node-vibrant": "^4.0.3"
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^5.1.1",
