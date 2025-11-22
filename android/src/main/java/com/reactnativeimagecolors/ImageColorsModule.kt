@@ -133,6 +133,12 @@ class ImageColorsModule : Module() {
             image = BitmapFactory.decodeStream(stream)
             stream?.close()
           }
+          
+          // check if local file URI or absolute path
+          if (uri.startsWith("file://") || uri.startsWith("/")) {
+            val filePath = if (uri.startsWith("file://")) Uri.parse(uri).path else uri
+            image = BitmapFactory.decodeFile(filePath)
+          }
 
           // check if valid URL (http/https)
           if (uri.startsWith("http")) {
