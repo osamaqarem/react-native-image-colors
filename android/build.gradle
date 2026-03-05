@@ -90,4 +90,5 @@ dependencies {
   implementation project(':expo-modules-core')
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${getKotlinVersion()}"
   implementation "androidx.palette:palette:1.0.0"
+  implementation "com.caverock:androidsvg:1.4"
 }

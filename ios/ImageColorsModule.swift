@@ -1,5 +1,6 @@
 import ExpoModulesCore
 import UIKit
+import SwiftDraw
 
 public class ImageColorsModule: Module {
 
@@ -127,8 +128,17 @@ public class ImageColorsModule: Module {
                     return
                 }
                 let base64String = String(uri[uri.index(after: commaIndex)...])
-                guard let data = Data(base64Encoded: base64String, options: .ignoreUnknownCharacters),
-                      let uiImage = UIImage(data: data) else {
+                guard let data = Data(base64Encoded: base64String, options: .ignoreUnknownCharacters) else {
+                    promise.reject(NSError(domain: ImageColorsModule.ERRORS.PARSE_ERR, code: -3))
+                    return
+                }
+
+                let isSVG = uri.hasPrefix("data:image/svg")
+                let uiImage: UIImage? = isSVG
+                    ? SVG(data: data)?.rasterize(scale: 1)
+                    : UIImage(data: data)
+
+                guard let uiImage else {
                     promise.reject(NSError(domain: ImageColorsModule.ERRORS.PARSE_ERR, code: -3))
                     return
                 }

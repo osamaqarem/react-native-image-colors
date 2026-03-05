@@ -16,6 +16,10 @@ const yunaUrl = 'https://i.imgur.com/68jyjZT.jpg'
 // const catUrl = 'https://i.imgur.com/O3XSdU7.jpg'
 // const catImg = require('../assets/cat.jpg')
 
+// 120x120 SVG: dark background (#1B1B3A), red/orange/navy circles, teal bar
+// const base64Image =
+//   'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiMxQjFCM0EiLz4KICA8Y2lyY2xlIGN4PSIzNSIgY3k9IjQwIiByPSIyNSIgZmlsbD0iI0U5NDU2MCIvPgogIDxjaXJjbGUgY3g9Ijg1IiBjeT0iNDAiIHI9IjI1IiBmaWxsPSIjRjVBNjIzIi8+CiAgPGNpcmNsZSBjeD0iNjAiIGN5PSI4MCIgcj0iMjUiIGZpbGw9IiMwRjM0NjAiLz4KICA8cmVjdCB4PSIxMCIgeT0iMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEyIiByeD0iNiIgZmlsbD0iIzE2Qzc5QSIvPgo8L3N2Zz4='
+
 const initialState = {
   colorOne: { value: '', name: '' },
   colorTwo: { value: '', name: '' },
