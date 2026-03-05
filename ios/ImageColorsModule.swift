@@ -77,6 +77,40 @@ public class ImageColorsModule: Module {
         var quality: String = QUALITY.LOW
     }
 
+    private func resolveColors(image: UIImage, quality qualityOption: String, fallback fallbackColor: String, promise: Promise) {
+        let quality = getQuality(qualityOption: qualityOption)
+
+        image.getColors(quality: quality) { colors in
+            var resultDict: Dictionary<String, String> = ["platform": "ios"]
+
+            if let background = colors?.background {
+                resultDict["background"] = self.toHexString(color: background)
+            } else {
+                resultDict["background"] = fallbackColor
+            }
+
+            if let primary = colors?.primary {
+                resultDict["primary"] = self.toHexString(color: primary)
+            } else {
+                resultDict["primary"] = fallbackColor
+            }
+
+            if let secondary = colors?.secondary {
+                resultDict["secondary"] = self.toHexString(color: secondary)
+            } else {
+                resultDict["secondary"] = fallbackColor
+            }
+
+            if let detail = colors?.detail {
+                resultDict["detail"] = self.toHexString(color: detail)
+            } else {
+                resultDict["detail"] = fallbackColor
+            }
+
+            promise.resolve(resultDict)
+        }
+    }
+
     public func definition() -> ModuleDefinition {
         Name("ImageColors")
 
@@ -84,6 +118,21 @@ public class ImageColorsModule: Module {
             guard let fallbackColor = parseFallbackColor(hexColor: config.fallback) else {
                 let error = NSError.init(domain: ImageColorsModule.ERRORS.INVALID_FALLBACK_COLOR, code: -1)
                 promise.reject(error)
+                return
+            }
+
+            if uri.hasPrefix("data:image") {
+                guard let commaIndex = uri.firstIndex(of: ",") else {
+                    promise.reject(NSError(domain: ImageColorsModule.ERRORS.INVALID_URL, code: -1))
+                    return
+                }
+                let base64String = String(uri[uri.index(after: commaIndex)...])
+                guard let data = Data(base64Encoded: base64String, options: .ignoreUnknownCharacters),
+                      let uiImage = UIImage(data: data) else {
+                    promise.reject(NSError(domain: ImageColorsModule.ERRORS.PARSE_ERR, code: -3))
+                    return
+                }
+                self.resolveColors(image: uiImage, quality: config.quality, fallback: fallbackColor, promise: promise)
                 return
             }
 
@@ -111,40 +160,7 @@ public class ImageColorsModule: Module {
                     return
                 }
 
-                let qualityProp = config.quality
-                let quality = getQuality(qualityOption: qualityProp)
-
-                uiImage.getColors(quality: quality) { colors in
-                    var resultDict: Dictionary<String, String> = ["platform": "ios"]
-
-                    if let background = colors?.background {
-                        resultDict["background"] = self.toHexString(color: background)
-                    } else {
-                        resultDict["background"] = fallbackColor
-                    }
-
-
-                    if let primary = colors?.primary {
-                        resultDict["primary"] = self.toHexString(color: primary)
-                    } else {
-                        resultDict["primary"] = fallbackColor
-                    }
-
-
-                    if let secondary = colors?.secondary {
-                        resultDict["secondary"] = self.toHexString(color: secondary)
-                    } else {
-                        resultDict["secondary"] = fallbackColor
-                    }
-
-                    if let detail = colors?.detail {
-                        resultDict["detail"] = self.toHexString(color: detail)
-                    } else {
-                        resultDict["detail"] = fallbackColor
-                    }
-
-                    promise.resolve(resultDict)
-                }
+                self.resolveColors(image: uiImage, quality: config.quality, fallback: fallbackColor, promise: promise)
             }.resume()
         }
     }
