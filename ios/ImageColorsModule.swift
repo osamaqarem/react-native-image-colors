@@ -122,7 +122,7 @@ public class ImageColorsModule: Module {
                 return
             }
 
-            if uri.hasPrefix("data:image") {
+            if uri.hasPrefix("data:image/svg") {
                 guard let commaIndex = uri.firstIndex(of: ",") else {
                     promise.reject(NSError(domain: ImageColorsModule.ERRORS.INVALID_URL, code: -1))
                     return
@@ -133,11 +133,8 @@ public class ImageColorsModule: Module {
                     return
                 }
 
-                let isSVG = uri.hasPrefix("data:image/svg")
-                let uiImage: UIImage? = isSVG
-                    ? SVG(data: data)?.rasterize(scale: 1)
-                    : UIImage(data: data)
-
+                let uiImage: UIImage? = SVG(data: data)?.rasterize(scale: 1)
+                
                 guard let uiImage else {
                     promise.reject(NSError(domain: ImageColorsModule.ERRORS.PARSE_ERR, code: -3))
                     return
