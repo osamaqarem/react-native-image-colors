@@ -2,12 +2,14 @@ package com.reactnativeimagecolors
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.graphics.Color
 import android.net.Uri
 import android.util.Base64
 import android.util.Log
 import android.webkit.URLUtil
 import androidx.palette.graphics.Palette
+import com.caverock.androidsvg.SVG as AndroidSVG
 
 import expo.modules.core.errors.ModuleDestroyedException
 import expo.modules.kotlin.Promise
@@ -123,7 +125,18 @@ class ImageColorsModule : Module() {
             val base64Uri = uri.split(",")[1]
             val decodedBytes = Base64.decode(base64Uri, Base64.DEFAULT)
 
-            image = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+            if (uri.startsWith("data:image/svg")) {
+              val svgString = String(decodedBytes, Charsets.UTF_8)
+              val svg = AndroidSVG.getFromString(svgString)
+              val width = if (svg.documentWidth > 0) svg.documentWidth.toInt() else 200
+              val height = if (svg.documentHeight > 0) svg.documentHeight.toInt() else 200
+              val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+              val canvas = Canvas(bitmap)
+              svg.renderToCanvas(canvas)
+              image = bitmap
+            } else {
+              image = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+            }
           }
 
           // check if content URI
