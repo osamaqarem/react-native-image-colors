@@ -64,6 +64,12 @@ android {
     kotlinOptions {
       jvmTarget = JavaVersion.VERSION_11.majorVersion
     }
+  } else {
+    // AGP 8+ does not set jvmTarget. Kotlin then follows the Gradle JDK (often 21)
+    // while Java stays on 17, and target validation fails the build.
+    kotlinOptions {
+      jvmTarget = JavaVersion.VERSION_17.majorVersion
+    }
   }
 
   defaultConfig {
