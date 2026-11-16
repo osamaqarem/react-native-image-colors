@@ -61,10 +61,11 @@ class ImageColorsModule : Module() {
     for (i in 0 until numSegments) {
       val xStart = i * segmentWidth
       val xEnd = minOf(width, (i + 1) * segmentWidth)
+      val columns = xEnd - xStart
 
-      bitmap.getPixels(segmentPixels, 0, segmentWidth, xStart, 0, xEnd - xStart, height)
+      bitmap.getPixels(segmentPixels, 0, columns, xStart, 0, columns, height)
 
-      for (index in segmentPixels.indices step pixelSpacing) {
+      for (index in 0 until columns * height step pixelSpacing) {
         redSum += Color.red(segmentPixels[index])
         greenSum += Color.green(segmentPixels[index])
         blueSum += Color.blue(segmentPixels[index])
