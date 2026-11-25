@@ -1,6 +1,7 @@
 example
 lib/typescript/example
 ios/build
+/.build/
 ios/ImageColors.xcodeproj/xcuserdata
 ios/ImageColors.xcodeproj/project.xcworkspace
 android/build/
